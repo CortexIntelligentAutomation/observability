@@ -1,0 +1,3146 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.4.4"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1651067820968,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 74,
+      "panels": [
+        {
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 66,
+          "options": {
+            "content": "This dashboard provides the information required to analyse the flow execution requests within the Cortex Innovation platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. This is filtered based on the selected tenants. |\r\n| Node | List of hosts that processed the flow execution requests. This is filtered based on the selected systems. |\r\n| Package Name | List of packages. This is filtered based on the selected systems. |\r\n| Flow Name | List of flows that have execution requests. This is filtered based on the selected systems and package names. |\r\n| Status Code | List of [status codes](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Status_codes) found in the HTTP responses. |\r\n| Error Type | List of errors found in the HTTP responses. |\r\n| Initiator IP Address | List of IP addresses for the initiators of the flow execution requests. |\r\n| Interval | List of intervals to perform the time series aggregations upon. This only affects the graphs on this dashboard. |",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.4.4",
+          "type": "text"
+        }
+      ],
+      "title": "Description",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 128,
+      "panels": [],
+      "title": "Dashboard",
+      "type": "row"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 110,
+      "options": {
+        "content": "# Overview  \r\nKey flow execution request metrics for the specified time range.  \r\n  \r\n**Note:** The Interval filter does not affect these values.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "description": "Displays the total number of flow execution requests during the specified time range.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 6
+      },
+      "id": 87,
+      "links": [],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Total Requests$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.4",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Requests",
+          "queryType": "instant",
+          "refId": "A",
+          "resolution": 1
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Errored Requests",
+          "queryType": "instant",
+          "refId": "B"
+        }
+      ],
+      "title": "Total Requests",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Value #A"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "Total Requests"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the total number of flow execution requests that errored during the specified time range.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 6
+      },
+      "id": 93,
+      "links": [],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Total Errored Requests$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.4.4",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 87,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Requests Errored",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Value #B"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #B": "Total Errored Requests"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the percentage of errored flow execution requests against the total flow execution requests during the specified time range.\n\n| Threshold | Value | Colour |\n|------------------|-----------|------------|\n| OK  | &lt; 5% | green |\n| WARNING |  &gt; 5% | orange |\n| CRITICAL |   &gt; 10% | red |",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "noValue": "0%",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 6
+      },
+      "id": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Request Error Rate$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 87,
+          "refId": "A"
+        }
+      ],
+      "title": "Request Error Rate",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Request Error Rate",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Value #A"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "Displays the mean duration in seconds for flow execution requests during the specified time range.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0 s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 6
+      },
+      "id": 104,
+      "links": [],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Mean Request Duration$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.4",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]) by (Type)",
+          "hide": false,
+          "legendFormat": "Total Requests",
+          "queryType": "instant",
+          "refId": "A",
+          "resolution": 1
+        }
+      ],
+      "title": "Mean Request Duration",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Type": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "Mean Duration (ms)"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Request Duration",
+            "binary": {
+              "left": "Mean Duration (ms)",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 111,
+      "options": {
+        "content": "# Requests\r\nFlow execution request history for the specified time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "description": "Displays the:\n- count of all flow execution requests\n- mean duration in seconds for all flow execution requests\n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow executions"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Count"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Requests in previous $Interval"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Duration (s)"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Mean Duration (s) in previous $Interval"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 88,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} [$Interval]))",
+          "legendFormat": "Flow executions",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "hide": false,
+          "legendFormat": "Average duration in ms",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "hide": false,
+          "legendFormat": "Min duration in ms",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "hide": false,
+          "legendFormat": "Max duration in ms",
+          "refId": "D"
+        }
+      ],
+      "title": "Requests",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Average duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Average Duration in ms": true,
+              "Average duration in ms": true,
+              "Average duration in seconds": false,
+              "Max duration in ms": true,
+              "Min duration in ms": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Mean Duration in seconds": "Mean Duration (s)"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "description": "Displays the 10 most executed flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Top 10"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "displayName",
+                "value": "Total Count"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 29
+      },
+      "id": 97,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range])))",
+          "hide": false,
+          "legendFormat": "Top10Executions",
+          "queryType": "instant",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range])))",
+          "hide": false,
+          "legendFormat": "Bottom10Executions",
+          "queryType": "instant",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "AvgDuration",
+          "queryType": "instant",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "MinDuration",
+          "queryType": "instant",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "MaxDuration",
+          "queryType": "instant",
+          "refId": "D"
+        }
+      ],
+      "title": "Top 10 Requests by Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #A": false,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true,
+              "Value #E": true
+            },
+            "indexByName": {
+              "FlowName": 1,
+              "Max Duration (s)": 8,
+              "Mean Duration (s)": 5,
+              "Min Duration (s)": 6,
+              "Time": 0,
+              "Value #A": 2,
+              "Value #B": 3,
+              "Value #C": 4,
+              "Value #D": 7,
+              "Value #E": 9
+            },
+            "renameByName": {
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "FlowName": "Flow Name",
+              "Time": "",
+              "Value #A": "Top 10",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #E": "Bottom 10",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Top 10"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Top 10"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the 10 least executed flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list. Also any flows with zero executions will not be displayed.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Bottom 10"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "displayName",
+                "value": "Total Count"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 29
+      },
+      "id": 113,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 97,
+          "refId": "A"
+        }
+      ],
+      "title": "Bottom 10 Requests by Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Avg Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #A": true,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true
+            },
+            "indexByName": {
+              "Avg Duration (s)": 5,
+              "FlowName": 1,
+              "Max Duration (s)": 9,
+              "Min Duration (s)": 7,
+              "Time": 0,
+              "Value #A": 2,
+              "Value #B": 4,
+              "Value #C": 6,
+              "Value #D": 8,
+              "Value #E": 3
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "FlowName": "Flow Name",
+              "Time": "",
+              "Value #A": "Top 10",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #E": "Bottom 10",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Bottom 10"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Bottom 10"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 112,
+      "options": {
+        "content": "# Errors\r\nErrored flow execution request history for the specified time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "description": "Displays the:\n- count of errored flow execution requests\n- mean duration in seconds for errored flow execution requests \n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errored Requests"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Count"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Errored Requests in previous $Interval"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Duration (s)"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Mean Duration (s) in previous $Interval"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 60,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" [$Interval]))",
+          "legendFormat": "Errored Requests",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$Interval]))",
+          "hide": false,
+          "legendFormat": "Average duration in ms",
+          "refId": "B"
+        }
+      ],
+      "title": "Errored Requests",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Average duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Average duration in ms": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Errored Requests": "Errored Requests",
+              "Mean Duration in seconds": "Mean Duration (s)"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "description": "Displays the 10 most errored flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Top 10"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "displayName",
+                "value": "Error Count"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "id": 114,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json [$__range])))",
+          "hide": false,
+          "legendFormat": "Top10Errored",
+          "queryType": "instant",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json [$__range])))",
+          "hide": false,
+          "legendFormat": "Bottom10Errored",
+          "queryType": "instant",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "AvgDuration",
+          "queryType": "instant",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "MinDuration",
+          "queryType": "instant",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "MaxDuration",
+          "queryType": "instant",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Count",
+          "queryType": "instant",
+          "refId": "F"
+        }
+      ],
+      "title": "Top 10 Requests by Error Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Avg Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #A": false,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true,
+              "Value #E": true
+            },
+            "indexByName": {
+              "Avg Duration (s)": 5,
+              "FlowName": 1,
+              "Max Duration (s)": 10,
+              "Min Duration (s)": 7,
+              "Time": 0,
+              "Value #A": 2,
+              "Value #B": 4,
+              "Value #C": 6,
+              "Value #D": 8,
+              "Value #E": 9,
+              "Value #F": 3
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "FlowName": "Flow Name",
+              "Time": "",
+              "Value #A": "Top 10",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #F": "Total Count",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Top 10"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Top 10"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the 10 least errored flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list. This list only shows flows that have at least 1 errored execution request.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Error Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 124
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "id": 115,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 114,
+          "refId": "A"
+        }
+      ],
+      "title": "Bottom 10 Requests by Error Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Value #E"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Avg Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #A": true,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true
+            },
+            "indexByName": {
+              "Avg Duration (s)": 6,
+              "FlowName": 1,
+              "Max Duration (s)": 10,
+              "Min Duration (s)": 8,
+              "Time": 0,
+              "Value #A": 2,
+              "Value #B": 5,
+              "Value #C": 7,
+              "Value #D": 9,
+              "Value #E": 3,
+              "Value #F": 4
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "FlowName": "Flow Name",
+              "Time": "",
+              "Value #A": "",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #E": "Error Count",
+              "Value #F": "Total Count",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Error Count"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 68
+      },
+      "id": 119,
+      "options": {
+        "content": "# Duration\r\nFlow execution request duration history for the specified time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "dashboard",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the:\n\n- mean duration in seconds for all flow execution requests\n- minimum duration in seconds for all flow execution requests\n- maximum duration in seconds for all flow execution requests\n\nEach data point value is calculated by aggregating requests based on the Interval filter. Currently each data point value will be an aggregation of the data for the previous 5m.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Duration (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Mean Duration (s) in previous $Interval"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Min Duration (s) in previous $Interval"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Max Duration (s) in previous $Interval"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 121,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 88,
+          "refId": "A"
+        }
+      ],
+      "title": "Request Duration",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Average duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Max duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Min duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Average duration in ms": true,
+              "Flow executions": true,
+              "Max Duration (ms)": true,
+              "Max duration in ms": true,
+              "Mean Duration (ms)": true,
+              "Min Duration (ms)": true,
+              "Min duration in ms": true
+            },
+            "indexByName": {
+              "Average duration in ms": 4,
+              "Flow executions": 1,
+              "Max Duration (s)": 7,
+              "Max duration in ms": 3,
+              "Mean Duration (s)": 5,
+              "Min Duration (s)": 6,
+              "Min duration in ms": 2,
+              "Time": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "description": "Displays the 10 flows with the longest mean duration during the specified time range with their total count, error count, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Error Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 84
+      },
+      "id": 125,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
+          "hide": false,
+          "legendFormat": "Top 10 Mean Duration (ms)",
+          "queryType": "instant",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
+          "hide": false,
+          "legendFormat": "Bottom 10 Mean Duration (ms)",
+          "queryType": "instant",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Count",
+          "queryType": "instant",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json [$__range]))",
+          "hide": false,
+          "legendFormat": "Error Count",
+          "queryType": "instant",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "Min Duration (ms)",
+          "queryType": "instant",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "Max Duration (ms)",
+          "queryType": "instant",
+          "refId": "C"
+        }
+      ],
+      "title": "Top 10 Longest Running Requests by Mean Duration",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Value #A"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Value #A",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #A": true,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": false,
+              "Value #F": true
+            },
+            "indexByName": {
+              "FlowName": 1,
+              "Max Duration (s)": 9,
+              "Mean Duration (s)": 2,
+              "Min Duration (s)": 7,
+              "Time": 0,
+              "Value #A": 5,
+              "Value #B": 6,
+              "Value #C": 8,
+              "Value #D": 3,
+              "Value #E": 4,
+              "Value #F": 10
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "FlowName": "Flow Name",
+              "Max Duration (s)": "",
+              "Time": "",
+              "Value #A": "",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Total Count",
+              "Value #E": "Error Count",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Mean Duration (s)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the 10 flows with the shortest mean duration during the specified time range with their total count, error count, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list. Also any flows with zero executions will not be displayed.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Error Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 84
+      },
+      "id": 126,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 125,
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Shortest Running Requests by Mean Duration",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Value #F"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Value #F",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #A": true,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": false,
+              "Value #F": true
+            },
+            "indexByName": {
+              "FlowName": 1,
+              "Max Duration (s)": 9,
+              "Mean Duration (s)": 2,
+              "Min Duration (s)": 7,
+              "Time": 0,
+              "Value #A": 5,
+              "Value #B": 6,
+              "Value #C": 8,
+              "Value #D": 3,
+              "Value #E": 4,
+              "Value #F": 10
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "FlowName": "Flow Name",
+              "Max Duration (s)": "",
+              "Mean Duration (s)": "",
+              "Time": "",
+              "Value #A": "",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Total Count",
+              "Value #E": "Error Count",
+              "Value #F": "",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Mean Duration (s)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {},
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "Tenant",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "datasource": "${DS_LOKI}"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "System",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false,
+        "datasource": "${DS_LOKI}"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "Node",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "datasource": "${DS_LOKI}"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Package Name",
+        "multi": true,
+        "name": "PackageName",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "datasource": "${DS_LOKI}"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Flow Name",
+        "multi": true,
+        "name": "FlowName",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "datasource": "${DS_LOKI}"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Status Code",
+        "multi": true,
+        "name": "StatusCode",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, ErrorType)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Error Type",
+        "multi": true,
+        "name": "ErrorType",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, ErrorType)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\"}, InitiatorIpAddress)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Initiator IP Address",
+        "multi": true,
+        "name": "Initiator",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\"}, InitiatorIpAddress)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "datasource": "${DS_LOKI}"
+      },
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "selected": false,
+          "text": "auto",
+          "value": "$__auto_interval_Interval"
+        },
+        "hide": 0,
+        "name": "Interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_Interval"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "queryValue": "",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Flow Execution Requests",
+  "uid": "o2QeoKQ7z",
+  "version": 32,
+  "weekStart": ""
+}
