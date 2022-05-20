@@ -1,0 +1,2434 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.3"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1653035339211,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": true,
+      "datasource": {
+        "type": "loki",
+        "uid": "OZj7Io-nk"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 74,
+      "panels": [
+        {
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 66,
+          "options": {
+            "content": "This dashboard provides the information required to analyse the health of the Cortex Innovation platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. |\r\n| Node | List of hosts that processed the requests. |\r\n| API | List of the API endpoints found in the HTTP requests. |\r\n| Status Code | List of [status codes](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Status_codes) found in the HTTP responses. |\r\n| Result | List of results found in the HTTP responses. |\r\n| Initiator IP Address | List of IP addresses for the initiators of the requests. |\r\n| Interval | List of intervals to perform the time series aggregations upon. This only affects the graphs on this dashboard. |\r\n| Custom Filter | Enables filtering on all available values including those that are not exposed by default. |\r\n\r\nAll filters (excluding Interval and Custom Filter) will display their available options dependant on the preceeding filters selected.\r\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.4.4",
+          "type": "text",
+          "datasource": "${DS_LOKI}"
+        }
+      ],
+      "title": "Description",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "loki",
+        "uid": "OZj7Io-nk"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 128,
+      "panels": [],
+      "title": "Dashboard",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 110,
+      "options": {
+        "content": "# Overview  \r\nKey platform health metrics for the specified time range.  \r\n  \r\n**Note:** The Interval filter does not affect these values.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.5.3",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "Displays the availability of the platform by calculating the successful requests / total requests during the specified time range.  Successful requests are all requests that do not result in a 5xx HTTP response, 4xx responses are considered successful in this scenario.\n\n| Threshold | Value | Colour |\n|------------------|-----------|------------|\n| OK  | &gt; 95% | green |\n| WARNING |  &gt; 90% | orange |\n| CRITICAL |   &lt; 90% | red |",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "No Requests in Time Range",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.9
+              },
+              {
+                "color": "green",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 6
+      },
+      "id": 87,
+      "links": [],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Availability$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.3",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Requests",
+          "queryType": "instant",
+          "refId": "A",
+          "resolution": 1
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [$__range])) or (sum(count_over_time({job=\"flows\"}[$__range])) * 0))",
+          "hide": false,
+          "legendFormat": "Total Successfull Requests",
+          "queryType": "instant",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [1s]))",
+          "hide": false,
+          "legendFormat": "Requests / second",
+          "queryType": "instant",
+          "refId": "C"
+        }
+      ],
+      "title": "Availability",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Time"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Availability",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Value #A"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the total number of requests during the specified time range.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 6
+      },
+      "id": 93,
+      "links": [],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Total Requests$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.5.3",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 87,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Requests",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Time"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Value #B": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "Total Requests"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the total number of errored requests during the specified time range.  Errored requests are all requests that result in an unknown or 5xx HTTP response, 4xx responses are considered successful in this scenario.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 6
+      },
+      "id": 100,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Errored Requests$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 87,
+          "refId": "A"
+        }
+      ],
+      "title": "Errored Requests",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Errored Requests",
+            "binary": {
+              "left": "Value #A",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "Value #B"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "Displays the mean duration for requests during the specified time range.\n\nNote: Certain APIs may take significantly longer than others skewing the result.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "0 s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 6
+      },
+      "id": 104,
+      "links": [],
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Mean Request Duration $/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.3",
+      "repeatDirection": "v",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$__range]) by (job)",
+          "hide": false,
+          "legendFormat": "Mean Duration (ms)",
+          "queryType": "instant",
+          "refId": "A",
+          "resolution": 1
+        }
+      ],
+      "title": "Mean Request Duration",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Request Duration ",
+            "binary": {
+              "left": "Value #A",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 111,
+      "options": {
+        "content": "# Availability\r\nThe availability of the Cortex Innovation platform.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.5.3",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "Displays the availability of the Cortex Innovation Platform by calculating successful requests / total requests. Successful requests are all requests that do not result in a 5xx HTTP response, 4xx responses are considered successful in this scenario.\n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.  If we have no data for the previous $Interval, the line will be broken as we do not know the availability at this time.\n\n| Threshold | Value | Colour |\n|------------------|-----------|------------|\n| OK  | &gt; 95% | green |\n| WARNING |  &gt; 90% | orange |\n| CRITICAL |   &lt; 90% | red |",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#ffffff",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisLabel": "Availability",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0.8,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.9
+              },
+              {
+                "color": "green",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Availability"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Availability in previous $Interval"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 88,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [$Interval])) or (sum(count_over_time({job=\"flows\"}[$Interval])) * 0))",
+          "legendFormat": "Successful Requests",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [$Interval])))",
+          "hide": false,
+          "legendFormat": "Total Requests",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [1s])))",
+          "hide": false,
+          "legendFormat": "Requests / second",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} !~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" [$Interval])) )",
+          "hide": false,
+          "legendFormat": "Errored Requests",
+          "refId": "D"
+        }
+      ],
+      "title": "Availability",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Availability",
+            "binary": {
+              "left": "Successful Requests",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Total Requests"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Availability": false,
+              "Errored Requests": true,
+              "Requests / second": true,
+              "Successful Requests": true,
+              "Total Requests": true,
+              "Total Requests / second": true
+            },
+            "indexByName": {
+              "Availability": 3,
+              "Requests / second": 4,
+              "Successful Requests": 2,
+              "Time": 0,
+              "Total Requests": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 112,
+      "options": {
+        "content": "# Requests\r\nRequests processed by the Cortex Innovation platform during the specified time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the count of all requests.\n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.\n\nAlso displays count of all requests per second.\n\n",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "orange",
+                "value": 0.9
+              },
+              {
+                "color": "green",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Requests"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Total Requests in previous $Interval"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Total Requests"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Requests / second"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Requests / second"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 130,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 88,
+          "refId": "A"
+        }
+      ],
+      "title": "Requests",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Time"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Availability": false,
+              "Errored Requests": true,
+              "Successful Requests": true,
+              "Total Requests": false
+            },
+            "indexByName": {
+              "Successful Requests": 3,
+              "Time": 0,
+              "Total Requests": 1,
+              "Total Requests / second": 2
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "Displays the Top 10 HTTP responses that occured during the specified time range with their mean, minimum and maximum duration in seconds. \n\nNote: The Interval filter does not affect this list.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status Code"
+            },
+            "properties": [
+              {
+                "id": "noValue"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 131,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "topk(10, sum by (StatusCode, ErrorType) (count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json [$__range])))",
+          "hide": false,
+          "legendFormat": "Top10 Responses",
+          "queryType": "instant",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg by (StatusCode, ErrorType) (avg_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\"  |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "AvgDuration",
+          "queryType": "instant",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "min by (StatusCode, ErrorType) (min_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\"  |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "MinDuration",
+          "queryType": "instant",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "max by (StatusCode, ErrorType) (max_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\"  |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "MaxDuration",
+          "queryType": "instant",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "topk(10, sum by (StatusCode, ErrorType) (count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} !~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json [$__range])))",
+          "hide": false,
+          "legendFormat": "Top10 Error Responses",
+          "queryType": "instant",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "topk(10, avg by (StatusCode, ErrorType) (avg_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$__range])))",
+          "hide": false,
+          "legendFormat": "Top10 Response Durations",
+          "queryType": "instant",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "sum by (StatusCode, ErrorType) (count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Count",
+          "queryType": "instant",
+          "refId": "G"
+        }
+      ],
+      "title": "Top 10 Responses by Total Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Avg Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "StatusCode": false,
+              "Time": true,
+              "Value #A": false,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true,
+              "Value #E": true,
+              "Value #F": true,
+              "Value #G": true
+            },
+            "indexByName": {
+              "Avg Duration (s)": 5,
+              "ErrorType": 2,
+              "Max Duration (s)": 9,
+              "Min Duration (s)": 7,
+              "StatusCode": 1,
+              "Time": 0,
+              "Value #A": 3,
+              "Value #B": 4,
+              "Value #C": 6,
+              "Value #D": 8,
+              "Value #E": 10
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "ErrorType": "Result",
+              "FlowName": "Flow Name",
+              "StatusCode": "Status Code",
+              "Time": "",
+              "Value #A": "Total Count",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #E": "",
+              "Value #F": "",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Total Count"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Total Count"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 129,
+      "options": {
+        "content": "# Errors\r\nErrored request history for the specified time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the:\n- count of errored requests\n- count of all requests\n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.\n\nErrored requests are all requests that result in an unknown or 5xx HTTP response, 4xx responses are considered successful in this scenario.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Total Requests",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errored Requests"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "custom.axisLabel",
+                "value": "Errored Requests"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Errored Requests in previous $Interval"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Requests"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Total Requests in previous $Interval"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 59
+      },
+      "id": 60,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 88,
+          "refId": "A"
+        }
+      ],
+      "title": "Errored Requests",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Time"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Average duration in ms": true,
+              "Requests / second": true,
+              "Successful Requests": true
+            },
+            "indexByName": {
+              "Errored Requests": 2,
+              "Requests / second": 4,
+              "Successful Requests": 1,
+              "Time": 0,
+              "Total Requests": 3
+            },
+            "renameByName": {
+              "Errored Requests": "",
+              "Mean Duration in seconds": "Mean Duration (s)"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the Top 10 HTTP error responses that occured during the specified time range with their mean, minimum and maximum duration in seconds. Errored requests are all requests that result in an unknown or 5xx HTTP response, 4xx responses are considered successful in this scenario.\n\nNote: The Interval filter does not affect this list.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status Code"
+            },
+            "properties": [
+              {
+                "id": "noValue"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 114,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 131,
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Error Responses by Error Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Avg Duration (s)",
+            "binary": {
+              "left": "Value #B",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "StatusCode": false,
+              "Time": true,
+              "Value #A": true,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true,
+              "Value #E": false,
+              "Value #F": true,
+              "Value #G": true
+            },
+            "indexByName": {
+              "Avg Duration (s)": 6,
+              "ErrorType": 2,
+              "Max Duration (s)": 10,
+              "Min Duration (s)": 8,
+              "StatusCode": 1,
+              "Time": 0,
+              "Value #A": 3,
+              "Value #B": 5,
+              "Value #C": 7,
+              "Value #D": 9,
+              "Value #E": 4
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "ErrorType": "Result",
+              "FlowName": "Flow Name",
+              "StatusCode": "Status Code",
+              "Time": "",
+              "Value #A": "",
+              "Value #B": "Avg Duration",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #E": "Error Count",
+              "Value #F": "",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "[1-4,6-9][0-9][0-9]"
+                  }
+                },
+                "fieldName": "Status Code"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Error Count"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 83
+      },
+      "id": 119,
+      "options": {
+        "content": "# Duration\r\nRequest duration history for the specified time range.\r\n\r\nNote: Certain APIs may take significantly longer than others skewing the results.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.4.4",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOKI}"
+      },
+      "description": "Displays the:\n\n- mean duration in seconds for all requests\n- minimum duration in seconds for all requests\n- maximum duration in seconds for all requests\n\nEach data point value is calculated by aggregating requests based on the Interval filter. Currently each data point value will be an aggregation of the data for the previous 5m.\n\nNote: Certain APIs may take significantly longer than others skewing the result.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "Duration (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mean Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Mean Duration (s) in previous $Interval"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Min Duration (s) in previous $Interval"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Max Duration (s) in previous $Interval"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "stepBefore"
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 87
+      },
+      "id": 121,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "min",
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(avg by (job) (avg_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "legendFormat": "Average Duration in ms",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(min by (job) (min_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "hide": false,
+          "legendFormat": "Min Duration in ms",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "(max by (job) (max_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\" | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "hide": false,
+          "legendFormat": "Max Duration in ms",
+          "refId": "C"
+        }
+      ],
+      "title": "Request Duration",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Average Duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Max Duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Min Duration in ms",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Average Duration in ms": true,
+              "Average duration in ms": true,
+              "Flow executions": true,
+              "Max Duration (ms)": true,
+              "Max Duration in ms": true,
+              "Max duration in ms": true,
+              "Mean Duration (ms)": true,
+              "Min Duration (ms)": true,
+              "Min Duration in ms": true,
+              "Min duration in ms": true
+            },
+            "indexByName": {
+              "Average duration in ms": 4,
+              "Flow executions": 1,
+              "Max Duration (s)": 7,
+              "Max duration in ms": 3,
+              "Mean Duration (s)": 5,
+              "Min Duration (s)": 6,
+              "Min duration in ms": 2,
+              "Time": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "Displays the top 10 HTTP responses that occured during the specified time range with their mean, minimum and maximum duration in seconds. \n\nNote: The Interval filter does not affect this list. Also, certain APIs may take significantly longer than others skewing the result.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status Code"
+            },
+            "properties": [
+              {
+                "id": "noValue"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 99
+      },
+      "id": 132,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.4.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 131,
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 Responses by Mean Duration",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Value #F"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mean Duration (s)",
+            "binary": {
+              "left": "Value #F",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Min Duration (s)",
+            "binary": {
+              "left": "Value #C",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Max Duration (s)",
+            "binary": {
+              "left": "Value #D",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "StatusCode": false,
+              "Time": true,
+              "Value #A": true,
+              "Value #B": true,
+              "Value #C": true,
+              "Value #D": true,
+              "Value #E": true,
+              "Value #F": true
+            },
+            "indexByName": {
+              "ErrorType": 2,
+              "Max Duration (s)": 9,
+              "Mean Duration (s)": 3,
+              "Min Duration (s)": 7,
+              "StatusCode": 1,
+              "Time": 0,
+              "Value #A": 4,
+              "Value #B": 11,
+              "Value #C": 6,
+              "Value #D": 8,
+              "Value #E": 10,
+              "Value #F": 12,
+              "Value #G": 5
+            },
+            "renameByName": {
+              "Avg Duration (s)": "Mean Duration (s)",
+              "Avg Duration Seconds": "Avg Duration (s)",
+              "ErrorType": "Result",
+              "FlowName": "Flow Name",
+              "Min Duration (s)": "",
+              "StatusCode": "Status Code",
+              "Time": "",
+              "Value #A": "",
+              "Value #B": "",
+              "Value #C": "Min Duration",
+              "Value #D": "Max Duration",
+              "Value #E": "",
+              "Value #F": "",
+              "Value #G": "Total Count",
+              "{FlowName=\"AllTranslationErrors\"}": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Mean Duration (s)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\"}, Tenant)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "Tenant",
+        "options": [],
+        "query": "label_values({job=\"flows\"}, Tenant)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Tenant=~\"$Tenant\"}, System)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "System",
+        "options": [],
+        "query": "label_values({job=\"flows\", Tenant=~\"$Tenant\"}, System)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "Node",
+        "options": [],
+        "query": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, Type)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "API",
+        "options": [],
+        "query": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, Type)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\"}, StatusCode)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Status Code",
+        "multi": true,
+        "name": "StatusCode",
+        "options": [],
+        "query": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\"}, StatusCode)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\"}, ErrorType)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "Result",
+        "options": [],
+        "query": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\"}, ErrorType)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOKI}"
+        },
+        "definition": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\"}, InitiatorIpAddress)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Initiator IP Address",
+        "multi": true,
+        "name": "Initiator",
+        "options": [],
+        "query": "label_values({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Type=~\"$API\", StatusCode=~\"$StatusCode\", ErrorType=~\"$Result\"}, InitiatorIpAddress)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "auto": true,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "selected": true,
+          "text": "auto",
+          "value": "$__auto_interval_Interval"
+        },
+        "hide": 0,
+        "name": "Interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "auto",
+            "value": "$__auto_interval_Interval"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "queryValue": "",
+        "refresh": 2,
+        "skipUrlSync": false,
+        "type": "interval"
+      },
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "OZj7Io-nk"
+        },
+        "filters": [],
+        "hide": 0,
+        "label": "Custom Filter",
+        "name": "AdhocFilters",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "filters": [],
+        "hide": 0,
+        "name": "Filters",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3d",
+    "to": "now"
+  },
+  "timepicker": {
+    "nowDelay": "",
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Platform Health",
+  "uid": "ZAQLulQnk",
+  "version": 101,
+  "weekStart": ""
+}
