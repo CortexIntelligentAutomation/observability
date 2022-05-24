@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_LOKI",
-      "label": "Loki",
+      "name": "DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS",
+      "label": "grafanacloud-donnamariesmith-logs",
       "description": "",
       "type": "datasource",
       "pluginId": "loki",
@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.4.4"
+      "version": "8.5.2"
     },
     {
       "type": "datasource",
@@ -52,7 +52,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -71,12 +74,16 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1651067820968,
+  "iteration": 1653383697367,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "collapsed": true,
+      "datasource": {
+        "type": "loki",
+        "uid": "OZj7Io-nk"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -86,18 +93,19 @@
       "id": 74,
       "panels": [
         {
+          "datasource": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}",
           "gridPos": {
-            "h": 10,
+            "h": 12,
             "w": 24,
             "x": 0,
-            "y": 9
+            "y": 1
           },
           "id": 66,
           "options": {
-            "content": "This dashboard provides the information required to analyse the flow execution requests within the Cortex Innovation platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. This is filtered based on the selected tenants. |\r\n| Node | List of hosts that processed the flow execution requests. This is filtered based on the selected systems. |\r\n| Package Name | List of packages. This is filtered based on the selected systems. |\r\n| Flow Name | List of flows that have execution requests. This is filtered based on the selected systems and package names. |\r\n| Status Code | List of [status codes](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Status_codes) found in the HTTP responses. |\r\n| Error Type | List of errors found in the HTTP responses. |\r\n| Initiator IP Address | List of IP addresses for the initiators of the flow execution requests. |\r\n| Interval | List of intervals to perform the time series aggregations upon. This only affects the graphs on this dashboard. |",
+            "content": "This dashboard provides the information required to analyse the flow execution requests within the Cortex Innovation platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. |\r\n| Node | List of hosts that processed the requests. |\r\n| Package Name | List of packages. |\r\n| Flow Name | List of flows that have execution requests. |\r\n| Status Code | List of [status codes](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Status_codes) found in the HTTP responses. |\r\n| Result | List of results found in the HTTP responses. |\r\n| Initiator IP Address | List of IP addresses for the initiators of the requests. |\r\n| Interval | List of intervals to perform the time series aggregations upon. This only affects the graphs on this dashboard. |\r\n| Custom Filter | Enables filtering on all available values including those that are not exposed by default. |\r\n\r\nAll filters (excluding Interval and Custom Filter) will display their available options dependant on the preceeding filters selected.\r\n",
             "mode": "markdown"
           },
-          "pluginVersion": "8.4.4",
+          "pluginVersion": "8.5.2",
           "type": "text"
         }
       ],
@@ -106,6 +114,10 @@
     },
     {
       "collapsed": false,
+      "datasource": {
+        "type": "loki",
+        "uid": "OZj7Io-nk"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -118,6 +130,10 @@
       "type": "row"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "",
       "gridPos": {
         "h": 4,
@@ -130,11 +146,15 @@
         "content": "# Overview  \r\nKey flow execution request metrics for the specified time range.  \r\n  \r\n**Note:** The Interval filter does not affect these values.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "transparent": true,
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "Displays the total number of flow execution requests during the specified time range.",
       "fieldConfig": {
         "defaults": {
@@ -176,15 +196,15 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} [$__range]))",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
           "hide": false,
           "legendFormat": "Total Requests",
           "queryType": "instant",
@@ -194,9 +214,9 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" [$__range]))",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" [$__range]))",
           "hide": false,
           "legendFormat": "Total Errored Requests",
           "queryType": "instant",
@@ -277,7 +297,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "repeatDirection": "v",
       "targets": [
         {
@@ -373,7 +393,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "datasource": {
@@ -407,6 +427,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "Displays the mean duration in seconds for flow execution requests during the specified time range.",
       "fieldConfig": {
         "defaults": {
@@ -449,15 +473,15 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]) by (Type)",
+          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]) by (Api)",
           "hide": false,
           "legendFormat": "Total Requests",
           "queryType": "instant",
@@ -501,6 +525,10 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "",
       "gridPos": {
         "h": 3,
@@ -513,11 +541,15 @@
         "content": "# Requests\r\nFlow execution request history for the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "transparent": true,
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "Displays the:\n- count of all flow execution requests\n- mean duration in seconds for all flow execution requests\n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.",
       "fieldConfig": {
         "defaults": {
@@ -573,7 +605,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Flow executions"
+              "options": "Total Requests"
             },
             "properties": [
               {
@@ -651,7 +683,7 @@
             "mean",
             "min",
             "max",
-            "last"
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom"
@@ -666,41 +698,51 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} [$Interval]))",
-          "legendFormat": "Flow executions",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval]))",
+          "legendFormat": "Total Requests",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
-          "legendFormat": "Average duration in ms",
+          "legendFormat": "Mean Duration (ms)",
           "refId": "B"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
-          "legendFormat": "Min duration in ms",
+          "legendFormat": "Min Duration (ms)",
           "refId": "C"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
-          "legendFormat": "Max duration in ms",
+          "legendFormat": "Max Duration (ms)",
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          },
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" [$Interval]))",
+          "hide": false,
+          "legendFormat": "Errored Requests",
+          "refId": "E"
         }
       ],
       "title": "Requests",
@@ -710,7 +752,7 @@
           "options": {
             "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Average duration in ms",
+              "left": "Mean Duration (ms)",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -728,10 +770,22 @@
               "Average Duration in ms": true,
               "Average duration in ms": true,
               "Average duration in seconds": false,
+              "Errored Requests": true,
+              "Max Duration (ms)": true,
               "Max duration in ms": true,
+              "Mean Duration (ms)": true,
+              "Min Duration (ms)": true,
               "Min duration in ms": true
             },
-            "indexByName": {},
+            "indexByName": {
+              "Errored Requests": 3,
+              "Max Duration (ms)": 6,
+              "Mean Duration (ms)": 4,
+              "Mean Duration (s)": 2,
+              "Min Duration (ms)": 5,
+              "Time": 0,
+              "Total Requests": 1
+            },
             "renameByName": {
               "Mean Duration in seconds": "Mean Duration (s)"
             }
@@ -742,6 +796,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "Displays the 10 most executed flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
       "fieldConfig": {
         "defaults": {
@@ -751,7 +809,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -777,13 +836,17 @@
             "properties": [
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "noValue",
+                "value": "Unknown"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Top 10"
+              "options": "Total Count"
             },
             "properties": [
               {
@@ -853,62 +916,106 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range])))",
+          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
           "hide": false,
-          "legendFormat": "Top10Executions",
+          "legendFormat": "Top 10 Executions",
           "queryType": "instant",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range])))",
+          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
           "hide": false,
-          "legendFormat": "Bottom10Executions",
-          "queryType": "instant",
-          "refId": "E"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
-          "hide": false,
-          "legendFormat": "AvgDuration",
+          "legendFormat": "Bottom 10 Executions",
           "queryType": "instant",
           "refId": "B"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
           "hide": false,
-          "legendFormat": "MinDuration",
+          "legendFormat": "Top 10 Mean Duration (ms)",
           "queryType": "instant",
           "refId": "C"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
           "hide": false,
-          "legendFormat": "MaxDuration",
+          "legendFormat": "Bottom 10 Mean Duration (ms)",
           "queryType": "instant",
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          },
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range]))",
+          "hide": false,
+          "legendFormat": "Total Count",
+          "queryType": "instant",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          },
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json [$__range]))",
+          "hide": false,
+          "legendFormat": "Error Count",
+          "queryType": "instant",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          },
+          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "Mean Duration (ms)",
+          "queryType": "instant",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          },
+          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "Min Duration (ms)",
+          "queryType": "instant",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          },
+          "expr": "max by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "hide": false,
+          "legendFormat": "Max Duration (ms)",
+          "queryType": "instant",
+          "refId": "I"
         }
       ],
       "title": "Top 10 Requests by Count",
@@ -922,7 +1029,7 @@
           "options": {
             "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Value #B",
+              "left": "Value #G",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -939,7 +1046,7 @@
           "options": {
             "alias": "Min Duration (s)",
             "binary": {
-              "left": "Value #C",
+              "left": "Value #H",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -955,7 +1062,7 @@
           "options": {
             "alias": "Max Duration (s)",
             "binary": {
-              "left": "Value #D",
+              "left": "Value #I",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -975,29 +1082,40 @@
               "Value #B": true,
               "Value #C": true,
               "Value #D": true,
-              "Value #E": true
+              "Value #E": true,
+              "Value #F": true,
+              "Value #G": true,
+              "Value #H": true,
+              "Value #I": true
             },
             "indexByName": {
               "FlowName": 1,
-              "Max Duration (s)": 8,
-              "Mean Duration (s)": 5,
-              "Min Duration (s)": 6,
+              "Max Duration (s)": 5,
+              "Mean Duration (s)": 3,
+              "Min Duration (s)": 4,
               "Time": 0,
               "Value #A": 2,
-              "Value #B": 3,
-              "Value #C": 4,
-              "Value #D": 7,
-              "Value #E": 9
+              "Value #B": 6,
+              "Value #C": 7,
+              "Value #D": 8,
+              "Value #E": 9,
+              "Value #F": 10,
+              "Value #G": 11,
+              "Value #H": 12,
+              "Value #I": 13
             },
             "renameByName": {
               "Avg Duration Seconds": "Avg Duration (s)",
               "FlowName": "Flow Name",
+              "Max Duration (s)": "",
+              "Mean Duration (s)": "",
+              "Min Duration (s)": "",
               "Time": "",
-              "Value #A": "Top 10",
-              "Value #B": "Avg Duration",
-              "Value #C": "Min Duration",
-              "Value #D": "Max Duration",
-              "Value #E": "Bottom 10",
+              "Value #A": "Total Count",
+              "Value #B": "",
+              "Value #C": "",
+              "Value #D": "",
+              "Value #E": "",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -1011,7 +1129,7 @@
                   "id": "isNull",
                   "options": {}
                 },
-                "fieldName": "Top 10"
+                "fieldName": "Total Count"
               }
             ],
             "match": "any",
@@ -1025,7 +1143,7 @@
             "sort": [
               {
                 "desc": true,
-                "field": "Top 10"
+                "field": "Total Count"
               }
             ]
           }
@@ -1047,7 +1165,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -1073,22 +1192,22 @@
             "properties": [
               {
                 "id": "custom.width"
+              },
+              {
+                "id": "noValue",
+                "value": "Unknown"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Bottom 10"
+              "options": "Total Count"
             },
             "properties": [
               {
                 "id": "custom.width",
                 "value": 95
-              },
-              {
-                "id": "displayName",
-                "value": "Total Count"
               }
             ]
           },
@@ -1149,7 +1268,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "datasource": {
@@ -1169,9 +1288,9 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Avg Duration (s)",
+            "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Value #B",
+              "left": "Value #G",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -1188,7 +1307,7 @@
           "options": {
             "alias": "Min Duration (s)",
             "binary": {
-              "left": "Value #C",
+              "left": "Value #H",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -1204,7 +1323,7 @@
           "options": {
             "alias": "Max Duration (s)",
             "binary": {
-              "left": "Value #D",
+              "left": "Value #I",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -1221,32 +1340,44 @@
             "excludeByName": {
               "Time": true,
               "Value #A": true,
-              "Value #B": true,
+              "Value #B": false,
               "Value #C": true,
-              "Value #D": true
+              "Value #D": true,
+              "Value #E": true,
+              "Value #F": true,
+              "Value #G": true,
+              "Value #H": true,
+              "Value #I": true
             },
             "indexByName": {
-              "Avg Duration (s)": 5,
               "FlowName": 1,
-              "Max Duration (s)": 9,
-              "Min Duration (s)": 7,
+              "Max Duration (s)": 5,
+              "Mean Duration (s)": 3,
+              "Min Duration (s)": 4,
               "Time": 0,
-              "Value #A": 2,
-              "Value #B": 4,
-              "Value #C": 6,
+              "Value #A": 6,
+              "Value #B": 2,
+              "Value #C": 7,
               "Value #D": 8,
-              "Value #E": 3
+              "Value #E": 9,
+              "Value #F": 10,
+              "Value #G": 11,
+              "Value #H": 12,
+              "Value #I": 13
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
               "Avg Duration Seconds": "Avg Duration (s)",
               "FlowName": "Flow Name",
+              "Mean Duration (s)": "",
+              "Min Duration (s)": "",
               "Time": "",
-              "Value #A": "Top 10",
-              "Value #B": "Avg Duration",
-              "Value #C": "Min Duration",
-              "Value #D": "Max Duration",
-              "Value #E": "Bottom 10",
+              "Value #A": "",
+              "Value #B": "Total Count",
+              "Value #C": "",
+              "Value #D": "",
+              "Value #E": "",
+              "Value #F": "",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -1260,7 +1391,7 @@
                   "id": "isNull",
                   "options": {}
                 },
-                "fieldName": "Bottom 10"
+                "fieldName": "Total Count"
               }
             ],
             "match": "any",
@@ -1274,7 +1405,7 @@
             "sort": [
               {
                 "desc": false,
-                "field": "Bottom 10"
+                "field": "Total Count"
               }
             ]
           }
@@ -1283,6 +1414,10 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "description": "",
       "gridPos": {
         "h": 3,
@@ -1295,11 +1430,15 @@
         "content": "# Errors\r\nErrored flow execution request history for the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "transparent": true,
       "type": "text"
     },
     {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
       "description": "Displays the:\n- count of errored flow execution requests\n- mean duration in seconds for errored flow execution requests \n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.",
       "fieldConfig": {
         "defaults": {
@@ -1434,7 +1573,7 @@
             "mean",
             "min",
             "max",
-            "last"
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom"
@@ -1448,22 +1587,11 @@
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Tenant=~\"$Tenant\", System=~\"$System\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" [$Interval]))",
-          "legendFormat": "Errored Requests",
+          "panelId": 88,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$Interval]))",
-          "hide": false,
-          "legendFormat": "Average duration in ms",
-          "refId": "B"
         }
       ],
       "title": "Errored Requests",
@@ -1473,7 +1601,7 @@
           "options": {
             "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Average duration in ms",
+              "left": "Mean Duration (ms)",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -1488,11 +1616,24 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Average duration in ms": true
+              "Average duration in ms": true,
+              "Max Duration (ms)": true,
+              "Mean Duration (ms)": true,
+              "Min Duration (ms)": true,
+              "Time": false,
+              "Total Requests": true
             },
-            "indexByName": {},
+            "indexByName": {
+              "Errored Requests": 2,
+              "Max Duration (ms)": 5,
+              "Mean Duration (ms)": 6,
+              "Mean Duration (s)": 3,
+              "Min Duration (ms)": 4,
+              "Time": 0,
+              "Total Requests": 1
+            },
             "renameByName": {
-              "Errored Requests": "Errored Requests",
+              "Errored Requests": "",
               "Mean Duration in seconds": "Mean Duration (s)"
             }
           }
@@ -1502,7 +1643,11 @@
       "type": "timeseries"
     },
     {
-      "description": "Displays the 10 most errored flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
+      "description": "Displays the 10 most errored (by status code and result) flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1511,7 +1656,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -1532,75 +1678,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Top 10"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
-              },
-              {
-                "id": "displayName",
-                "value": "Error Count"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mean Duration (s)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 135
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Min Duration (s)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 125
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Max Duration (s)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 125
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Flow Name"
             },
             "properties": [
               {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
+                "id": "noValue",
+                "value": "Unknown"
               }
             ]
           }
@@ -1608,7 +1691,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 56
       },
@@ -1625,73 +1708,51 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json [$__range])))",
+          "expr": "topk(10, sum by (FlowName, StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json [$__range])))",
           "hide": false,
-          "legendFormat": "Top10Errored",
+          "legendFormat": "Top10 Errored Requests",
           "queryType": "instant",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json [$__range])))",
+          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
-          "legendFormat": "Bottom10Errored",
-          "queryType": "instant",
-          "refId": "E"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
-          "hide": false,
-          "legendFormat": "AvgDuration",
+          "legendFormat": "Mean Duration (ms)",
           "queryType": "instant",
           "refId": "B"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
-          "legendFormat": "MinDuration",
+          "legendFormat": "Min Duration (ms)",
           "queryType": "instant",
           "refId": "C"
         },
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
           },
-          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
-          "legendFormat": "MaxDuration",
+          "legendFormat": "Max Duration (ms)",
           "queryType": "instant",
           "refId": "D"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range]))",
-          "hide": false,
-          "legendFormat": "Total Count",
-          "queryType": "instant",
-          "refId": "F"
         }
       ],
       "title": "Top 10 Requests by Error Count",
@@ -1703,7 +1764,7 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Avg Duration (s)",
+            "alias": "Mean Duration (s)",
             "binary": {
               "left": "Value #B",
               "operator": "/",
@@ -1761,27 +1822,28 @@
               "Value #E": true
             },
             "indexByName": {
-              "Avg Duration (s)": 5,
               "FlowName": 1,
-              "Max Duration (s)": 10,
-              "Min Duration (s)": 7,
+              "Max Duration (s)": 7,
+              "Mean Duration (s)": 5,
+              "Min Duration (s)": 6,
+              "Result": 3,
+              "StatusCode": 2,
               "Time": 0,
-              "Value #A": 2,
-              "Value #B": 4,
-              "Value #C": 6,
-              "Value #D": 8,
-              "Value #E": 9,
-              "Value #F": 3
+              "Value #A": 4,
+              "Value #B": 8,
+              "Value #C": 9,
+              "Value #D": 10
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
               "Avg Duration Seconds": "Avg Duration (s)",
               "FlowName": "Flow Name",
+              "StatusCode": "Status Code",
               "Time": "",
-              "Value #A": "Top 10",
-              "Value #B": "Avg Duration",
-              "Value #C": "Min Duration",
-              "Value #D": "Max Duration",
+              "Value #A": "Error Count",
+              "Value #B": "",
+              "Value #C": "",
+              "Value #D": "",
               "Value #F": "Total Count",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
@@ -1793,10 +1855,19 @@
             "filters": [
               {
                 "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "[1-3,6-9][0-9][0-9]"
+                  }
+                },
+                "fieldName": "Status Code"
+              },
+              {
+                "config": {
                   "id": "isNull",
                   "options": {}
                 },
-                "fieldName": "Top 10"
+                "fieldName": "Error Count"
               }
             ],
             "match": "any",
@@ -1810,265 +1881,6 @@
             "sort": [
               {
                 "desc": true,
-                "field": "Top 10"
-              }
-            ]
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "-- Dashboard --"
-      },
-      "description": "Displays the 10 least errored flows during the specified time range with their mean, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list. This list only shows flows that have at least 1 errored execution request.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Flow Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Error Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Min Duration (s)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 124
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Max Duration (s)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 125
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mean Duration (s)"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 135
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Count"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 95
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 12,
-        "x": 12,
-        "y": 56
-      },
-      "id": 115,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "frameIndex": 0,
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "8.4.4",
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "-- Dashboard --"
-          },
-          "panelId": 114,
-          "refId": "A"
-        }
-      ],
-      "title": "Bottom 10 Requests by Error Count",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "isNull",
-                  "options": {}
-                },
-                "fieldName": "Value #E"
-              }
-            ],
-            "match": "any",
-            "type": "exclude"
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Avg Duration (s)",
-            "binary": {
-              "left": "Value #B",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #C",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #D",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value #A": true,
-              "Value #B": true,
-              "Value #C": true,
-              "Value #D": true
-            },
-            "indexByName": {
-              "Avg Duration (s)": 6,
-              "FlowName": 1,
-              "Max Duration (s)": 10,
-              "Min Duration (s)": 8,
-              "Time": 0,
-              "Value #A": 2,
-              "Value #B": 5,
-              "Value #C": 7,
-              "Value #D": 9,
-              "Value #E": 3,
-              "Value #F": 4
-            },
-            "renameByName": {
-              "Avg Duration (s)": "Mean Duration (s)",
-              "Avg Duration Seconds": "Avg Duration (s)",
-              "FlowName": "Flow Name",
-              "Time": "",
-              "Value #A": "",
-              "Value #B": "Avg Duration",
-              "Value #C": "Min Duration",
-              "Value #D": "Max Duration",
-              "Value #E": "Error Count",
-              "Value #F": "Total Count",
-              "{FlowName=\"AllTranslationErrors\"}": ""
-            }
-          }
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": false,
                 "field": "Error Count"
               }
             ]
@@ -2078,6 +1890,10 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+      },
       "gridPos": {
         "h": 3,
         "w": 24,
@@ -2089,7 +1905,7 @@
         "content": "# Duration\r\nFlow execution request duration history for the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "transparent": true,
       "type": "text"
     },
@@ -2221,7 +2037,7 @@
             "mean",
             "min",
             "max",
-            "last"
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "bottom"
@@ -2248,7 +2064,7 @@
           "options": {
             "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Average duration in ms",
+              "left": "Mean Duration (ms)",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2264,7 +2080,7 @@
           "options": {
             "alias": "Max Duration (s)",
             "binary": {
-              "left": "Max duration in ms",
+              "left": "Max Duration (ms)",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2280,7 +2096,7 @@
           "options": {
             "alias": "Min Duration (s)",
             "binary": {
-              "left": "Min duration in ms",
+              "left": "Min Duration (ms)",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2296,22 +2112,25 @@
           "options": {
             "excludeByName": {
               "Average duration in ms": true,
+              "Errored Requests": true,
               "Flow executions": true,
               "Max Duration (ms)": true,
               "Max duration in ms": true,
               "Mean Duration (ms)": true,
               "Min Duration (ms)": true,
-              "Min duration in ms": true
+              "Min duration in ms": true,
+              "Total Requests": true
             },
             "indexByName": {
-              "Average duration in ms": 4,
-              "Flow executions": 1,
-              "Max Duration (s)": 7,
-              "Max duration in ms": 3,
-              "Mean Duration (s)": 5,
-              "Min Duration (s)": 6,
-              "Min duration in ms": 2,
-              "Time": 0
+              "Errored Requests": 5,
+              "Max Duration (ms)": 8,
+              "Max Duration (s)": 3,
+              "Mean Duration (ms)": 6,
+              "Mean Duration (s)": 1,
+              "Min Duration (ms)": 7,
+              "Min Duration (s)": 2,
+              "Time": 0,
+              "Total Requests": 4
             },
             "renameByName": {}
           }
@@ -2321,6 +2140,10 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
       "description": "Displays the 10 flows with the longest mean duration during the specified time range with their total count, error count, minimum and maximum duration in seconds.\n\nNote: The Interval filter does not affect this list.",
       "fieldConfig": {
         "defaults": {
@@ -2330,7 +2153,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -2411,6 +2235,18 @@
                 "value": "0"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "Unknown"
+              }
+            ]
           }
         ]
       },
@@ -2433,73 +2269,15 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
-          "hide": false,
-          "legendFormat": "Top 10 Mean Duration (ms)",
-          "queryType": "instant",
+          "panelId": 97,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
-          "hide": false,
-          "legendFormat": "Bottom 10 Mean Duration (ms)",
-          "queryType": "instant",
-          "refId": "F"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json [$__range]))",
-          "hide": false,
-          "legendFormat": "Total Count",
-          "queryType": "instant",
-          "refId": "D"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} |= \"Error\" | json [$__range]))",
-          "hide": false,
-          "legendFormat": "Error Count",
-          "queryType": "instant",
-          "refId": "E"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
-          "hide": false,
-          "legendFormat": "Min Duration (ms)",
-          "queryType": "instant",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "${DS_LOKI}"
-          },
-          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\", Initiator=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
-          "hide": false,
-          "legendFormat": "Max Duration (ms)",
-          "queryType": "instant",
-          "refId": "C"
         }
       ],
       "title": "Top 10 Longest Running Requests by Mean Duration",
@@ -2517,7 +2295,7 @@
                   "id": "isNull",
                   "options": {}
                 },
-                "fieldName": "Value #A"
+                "fieldName": "Value #C"
               }
             ],
             "match": "any",
@@ -2529,7 +2307,7 @@
           "options": {
             "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Value #A",
+              "left": "Value #C",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2546,7 +2324,7 @@
           "options": {
             "alias": "Min Duration (s)",
             "binary": {
-              "left": "Value #B",
+              "left": "Value #H",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2562,7 +2340,7 @@
           "options": {
             "alias": "Max Duration (s)",
             "binary": {
-              "left": "Value #C",
+              "left": "Value #I",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2581,21 +2359,28 @@
               "Value #A": true,
               "Value #B": true,
               "Value #C": true,
-              "Value #D": false,
-              "Value #F": true
+              "Value #D": true,
+              "Value #E": false,
+              "Value #F": false,
+              "Value #G": true,
+              "Value #H": true,
+              "Value #I": true
             },
             "indexByName": {
               "FlowName": 1,
-              "Max Duration (s)": 9,
+              "Max Duration (s)": 6,
               "Mean Duration (s)": 2,
-              "Min Duration (s)": 7,
+              "Min Duration (s)": 5,
               "Time": 0,
-              "Value #A": 5,
-              "Value #B": 6,
-              "Value #C": 8,
-              "Value #D": 3,
-              "Value #E": 4,
-              "Value #F": 10
+              "Value #A": 7,
+              "Value #B": 8,
+              "Value #C": 9,
+              "Value #D": 10,
+              "Value #E": 3,
+              "Value #F": 4,
+              "Value #G": 11,
+              "Value #H": 12,
+              "Value #I": 13
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
@@ -2604,10 +2389,11 @@
               "Max Duration (s)": "",
               "Time": "",
               "Value #A": "",
-              "Value #B": "Avg Duration",
-              "Value #C": "Min Duration",
-              "Value #D": "Total Count",
-              "Value #E": "Error Count",
+              "Value #B": "",
+              "Value #C": "",
+              "Value #D": "",
+              "Value #E": "Total Count",
+              "Value #F": "Error Count",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -2641,7 +2427,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": false
+            "filterable": false,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -2710,17 +2497,6 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Flow Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Error Count"
             },
             "properties": [
@@ -2731,6 +2507,18 @@
               {
                 "id": "noValue",
                 "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "Unknown"
               }
             ]
           }
@@ -2755,14 +2543,14 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.4.4",
+      "pluginVersion": "8.5.2",
       "targets": [
         {
           "datasource": {
             "type": "datasource",
             "uid": "-- Dashboard --"
           },
-          "panelId": 125,
+          "panelId": 97,
           "refId": "A"
         }
       ],
@@ -2781,7 +2569,7 @@
                   "id": "isNull",
                   "options": {}
                 },
-                "fieldName": "Value #F"
+                "fieldName": "Value #D"
               }
             ],
             "match": "any",
@@ -2793,7 +2581,7 @@
           "options": {
             "alias": "Mean Duration (s)",
             "binary": {
-              "left": "Value #F",
+              "left": "Value #D",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2810,7 +2598,7 @@
           "options": {
             "alias": "Min Duration (s)",
             "binary": {
-              "left": "Value #B",
+              "left": "Value #H",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2826,7 +2614,7 @@
           "options": {
             "alias": "Max Duration (s)",
             "binary": {
-              "left": "Value #C",
+              "left": "Value #I",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -2845,21 +2633,27 @@
               "Value #A": true,
               "Value #B": true,
               "Value #C": true,
-              "Value #D": false,
-              "Value #F": true
+              "Value #D": true,
+              "Value #F": false,
+              "Value #G": true,
+              "Value #H": true,
+              "Value #I": true
             },
             "indexByName": {
               "FlowName": 1,
-              "Max Duration (s)": 9,
+              "Max Duration (s)": 6,
               "Mean Duration (s)": 2,
-              "Min Duration (s)": 7,
+              "Min Duration (s)": 5,
               "Time": 0,
-              "Value #A": 5,
-              "Value #B": 6,
-              "Value #C": 8,
-              "Value #D": 3,
-              "Value #E": 4,
-              "Value #F": 10
+              "Value #A": 7,
+              "Value #B": 8,
+              "Value #C": 9,
+              "Value #D": 10,
+              "Value #E": 3,
+              "Value #F": 4,
+              "Value #G": 11,
+              "Value #H": 12,
+              "Value #I": 13
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
@@ -2867,13 +2661,14 @@
               "FlowName": "Flow Name",
               "Max Duration (s)": "",
               "Mean Duration (s)": "",
+              "Min Duration (s)": "",
               "Time": "",
               "Value #A": "",
               "Value #B": "Avg Duration",
               "Value #C": "Min Duration",
-              "Value #D": "Total Count",
-              "Value #E": "Error Count",
-              "Value #F": "",
+              "Value #D": "",
+              "Value #E": "Total Count",
+              "Value #F": "Error Count",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -2895,7 +2690,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 35,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2903,31 +2698,38 @@
       {
         "allValue": ".*",
         "current": {},
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        },
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
         "hide": 0,
         "includeAll": true,
         "label": "",
         "multi": true,
         "name": "Tenant",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
-        "type": "query",
-        "datasource": "${DS_LOKI}"
+        "type": "query"
       },
       {
         "allValue": ".*",
         "current": {},
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        },
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "System",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2935,77 +2737,85 @@
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
-        "useTags": false,
-        "datasource": "${DS_LOKI}"
-      },
-      {
-        "allValue": ".*",
-        "current": {},
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
-        "hide": 0,
-        "includeAll": true,
-        "multi": true,
-        "name": "Node",
-        "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query",
-        "datasource": "${DS_LOKI}"
-      },
-      {
-        "allValue": ".*",
-        "current": {},
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Package Name",
-        "multi": true,
-        "name": "PackageName",
-        "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query",
-        "datasource": "${DS_LOKI}"
-      },
-      {
-        "allValue": ".*",
-        "current": {},
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Flow Name",
-        "multi": true,
-        "name": "FlowName",
-        "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query",
-        "datasource": "${DS_LOKI}"
+        "useTags": false
       },
       {
         "allValue": ".*",
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_LOKI}"
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
         },
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "Node",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        },
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Package Name",
+        "multi": true,
+        "name": "PackageName",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        },
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Flow Name",
+        "multi": true,
+        "name": "FlowName",
+        "options": [],
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        },
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
         "hide": 0,
         "includeAll": true,
         "label": "Status Code",
         "multi": true,
         "name": "StatusCode",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -3020,16 +2830,16 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_LOKI}"
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
         },
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, ErrorType)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, Result)",
         "hide": 0,
         "includeAll": true,
-        "label": "Error Type",
+        "label": "Result",
         "multi": true,
-        "name": "ErrorType",
+        "name": "Result",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, ErrorType)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, Result)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -3042,20 +2852,23 @@
       {
         "allValue": ".*",
         "current": {},
-        "definition": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\"}, InitiatorIpAddress)",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        },
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
         "hide": 0,
         "includeAll": true,
         "label": "Initiator IP Address",
         "multi": true,
         "name": "Initiator",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=~\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", ErrorType=~\"$ErrorType\"}, InitiatorIpAddress)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
-        "type": "query",
-        "datasource": "${DS_LOKI}"
+        "type": "query"
       },
       {
         "auto": true,
@@ -3130,17 +2943,29 @@
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
+      },
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "grafanacloud-logs"
+        },
+        "filters": [],
+        "hide": 0,
+        "label": "Custom Filter",
+        "name": "AdhocFilters",
+        "skipUrlSync": false,
+        "type": "adhoc"
       }
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Flow Execution Requests",
   "uid": "o2QeoKQ7z",
-  "version": 32,
+  "version": 9,
   "weekStart": ""
 }
