@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS",
-      "label": "grafanacloud-donnamariesmith-logs",
+      "name": "DS_LOKI",
+      "label": "Loki",
       "description": "",
       "type": "datasource",
       "pluginId": "loki",
@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.2"
+      "version": "8.5.3"
     },
     {
       "type": "datasource",
@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1653382974296,
+  "iteration": 1653401864629,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -93,7 +93,7 @@
       "id": 74,
       "panels": [
         {
-          "datasource": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}",
+          "datasource": "${DS_LOKI}",
           "gridPos": {
             "h": 11,
             "w": 24,
@@ -132,7 +132,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "",
       "gridPos": {
@@ -146,14 +146,14 @@
         "content": "# Overview  \r\nKey platform health metrics for the specified time range.  \r\n  \r\n**Note:** The Interval filter does not affect these values.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "transparent": true,
       "type": "text"
     },
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "Displays the availability of the platform by calculating the successful requests / total requests during the specified time range.  Successful requests are all requests that do not result in a 5xx HTTP response, 4xx responses are considered successful in this scenario.\n\n| Threshold | Value | Colour |\n|------------------|-----------|------------|\n| OK  | &gt; 95% | green |\n| WARNING |  &gt; 90% | orange |\n| CRITICAL |   &lt; 90% | red |",
       "fieldConfig": {
@@ -205,13 +205,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
           "hide": false,
@@ -223,7 +223,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" [$__range])) or (sum(count_over_time({job=\"flows\"}[$__range])) * 0))",
           "hide": false,
@@ -234,7 +234,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [1s]))",
           "hide": false,
@@ -317,7 +317,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "repeatDirection": "v",
       "targets": [
         {
@@ -405,7 +405,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "datasource": {
@@ -445,7 +445,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "Displays the mean duration for requests during the specified time range.\n\nNote: Certain APIs may take significantly longer than others skewing the result.",
       "fieldConfig": {
@@ -489,13 +489,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]) by (job)",
           "hide": false,
@@ -530,7 +530,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "",
       "gridPos": {
@@ -544,14 +544,14 @@
         "content": "# Availability\r\nThe availability of the Cortex Innovation platform.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "transparent": true,
       "type": "text"
     },
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "Displays the availability of the Cortex Innovation Platform by calculating successful requests / total requests. Successful requests are all requests that do not result in a 5xx HTTP response, 4xx responses are considered successful in this scenario.\n\nEach data point value is calculated by aggregating requests based on the Interval filter.  Currently each data point value will be an aggregation of the data for the previous $Interval.  If we have no data for the previous $Interval, the line will be broken as we do not know the availability at this time.\n\n| Threshold | Value | Colour |\n|------------------|-----------|------------|\n| OK  | &gt; 95% | green |\n| WARNING |  &gt; 90% | orange |\n| CRITICAL |   &lt; 90% | red |",
       "fieldConfig": {
@@ -669,7 +669,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" [$Interval])) or (sum(count_over_time({job=\"flows\"}[$Interval])) * 0))",
           "legendFormat": "Successful Requests",
@@ -678,7 +678,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval])))",
           "hide": false,
@@ -688,7 +688,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [1s])))",
           "hide": false,
@@ -698,7 +698,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(sum(count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} !~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" [$Interval])) )",
           "hide": false,
@@ -752,7 +752,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "",
       "gridPos": {
@@ -766,7 +766,7 @@
         "content": "# Requests\r\nRequests processed by the Cortex Innovation platform during the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.3",
       "transparent": true,
       "type": "text"
     },
@@ -818,8 +818,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "orange",
@@ -965,7 +964,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "Displays the Top 10 HTTP responses that occured during the specified time range with their mean, minimum and maximum duration in seconds. \n\nNote: The Interval filter does not affect this list.",
       "fieldConfig": {
@@ -984,8 +983,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1032,7 +1030,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "topk(10, sum by (StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range])))",
           "hide": false,
@@ -1043,7 +1041,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
@@ -1054,7 +1052,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "min by (StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
@@ -1065,7 +1063,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "max by (StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
@@ -1076,7 +1074,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "topk(10, sum by (StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} !~ \"\\\"StatusCode\\\":.?[1-4,6-9][0-9][0-9]\" [$__range])))",
           "hide": false,
@@ -1087,7 +1085,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "topk(10, avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range])))",
           "hide": false,
@@ -1098,7 +1096,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "sum by (StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
           "hide": false,
@@ -1242,7 +1240,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "",
       "gridPos": {
@@ -1306,8 +1304,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1471,8 +1468,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1662,7 +1658,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "gridPos": {
         "h": 4,
@@ -1682,7 +1678,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+        "uid": "${DS_LOKI}"
       },
       "description": "Displays the:\n\n- mean duration in seconds for all requests\n- minimum duration in seconds for all requests\n- maximum duration in seconds for all requests\n\nEach data point value is calculated by aggregating requests based on the Interval filter. Currently each data point value will be an aggregation of the data for the previous 5m.\n\nNote: Certain APIs may take significantly longer than others skewing the result.",
       "fieldConfig": {
@@ -1724,8 +1720,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1849,7 +1844,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(avg by (job) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
           "legendFormat": "Average Duration in ms",
@@ -1858,7 +1853,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(min by (job) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
           "hide": false,
@@ -1868,7 +1863,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+            "uid": "${DS_LOKI}"
           },
           "expr": "(max by (job) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
           "hide": false,
@@ -1980,8 +1975,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2179,7 +2173,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\"}, Tenant)",
         "hide": 0,
@@ -2200,7 +2194,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\"}, System)",
         "hide": 0,
@@ -2223,7 +2217,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
         "hide": 0,
@@ -2243,7 +2237,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, Api)",
         "hide": 0,
@@ -2264,7 +2258,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\"}, StatusCode)",
         "hide": 0,
@@ -2285,7 +2279,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\"}, Result)",
         "hide": 0,
@@ -2305,7 +2299,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_GRAFANACLOUD-DONNAMARIESMITH-LOGS}"
+          "uid": "${DS_LOKI}"
         },
         "definition": "label_values({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
         "hide": 0,
@@ -2398,12 +2392,12 @@
       {
         "datasource": {
           "type": "loki",
-          "uid": "grafanacloud-logs"
+          "uid": "OZj7Io-nk"
         },
         "filters": [],
         "hide": 0,
         "label": "Custom Filter",
-        "name": "AdhocFilters",
+        "name": "CustomFilter",
         "skipUrlSync": false,
         "type": "adhoc"
       }
@@ -2431,6 +2425,6 @@
   "timezone": "",
   "title": "Platform Health",
   "uid": "ZAQLulQnk",
-  "version": 5,
+  "version": 108,
   "weekStart": ""
 }
