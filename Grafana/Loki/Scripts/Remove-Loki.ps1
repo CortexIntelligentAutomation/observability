@@ -1,0 +1,1 @@
+.\nssm.exe remove Loki

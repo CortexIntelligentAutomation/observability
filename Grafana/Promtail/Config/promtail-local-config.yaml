@@ -1,0 +1,66 @@
+server:
+  disable: true
+  
+positions:
+  filename: c:/tmp/positions.yaml # This folder location must be created on disk prior to starting Promtail Windows service.
+
+clients:
+  - url: https://<username>:<password>@<loki host address>:<loki reverse proxy port>/loki/api/v1/push # e.g. https://username:password@hostaddress.com:2100/loki/api/v1/push
+         
+scrape_configs:      
+- job_name: ApiGateway
+  pipeline_stages:
+  - json:
+      expressions:
+        Timestamp: '"@t"'
+  - timestamp:
+      source: Timestamp
+      format: RFC3339Nano
+  - match:
+      selector: '{job="flows"}|~ "\"SourceContext\":.?\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\""'
+      stages:
+      - json:
+          expressions:
+            Type: Event.LogType || 'Cortex'
+            Api: Event.Type
+            Result: Event.Details.Response.Outputs.Value.Error || 'Success'
+            StatusCode: Event.Details.Response.Outputs.StatusCode || 'Unknown'
+            Tenant: Event.Details.Request.Inputs.tenant
+            System: Event.Details.Request.Inputs.system
+            Node: Event.Service.NodeName
+            PackageName: Event.Details.Request.Inputs.packageName
+            FlowName: Event.Details.Request.Inputs.flowName
+            InitiatorIpAddress: Event.Details.Request.Initiator.IpAddress
+      - labels:
+          Type:
+          Api:
+          Result:
+          StatusCode:
+          Tenant:
+          System:
+          Node:
+          PackageName: 
+          FlowName:
+          InitiatorIpAddress:
+  - match:
+      selector: '{job="flows"}|~ "\"Outputs\":.?null"'
+      stages:
+      - json:
+          expressions:
+            Result: Unknown.Error || 'Unknown'
+      - labels:
+          Result:
+  - match:
+      selector: '{job="flows"}|~ "\"\\$type\":.?\"\\w+ProblemDetails"'
+      stages:
+      - json:
+          expressions:
+            Result: Event.Details.Response.Outputs.Value."$type" || 'Not Set'
+      - labels:
+          Result:
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: flows
+      __path__: "C:/ProgramData/Cortex/Cortex API Gateway Service/Logs/*.json" # This path must much the location to which logs of the Cortex API Gateway Service are written to.
