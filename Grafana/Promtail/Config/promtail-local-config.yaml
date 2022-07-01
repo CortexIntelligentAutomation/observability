@@ -24,7 +24,7 @@ scrape_configs:
             Type: Event.LogType || 'Cortex'
             Api: Event.Type
             Result: Event.Details.Response.Outputs.Value.Error || 'Success'
-            StatusCode: Event.Details.Response.Outputs.StatusCode || 'Unknown'
+            StatusCode: Event.Details.Response.StatusCode || 'Unknown'
             Tenant: Event.Details.Request.Inputs.tenant
             System: Event.Details.Request.Inputs.system
             Node: Event.Service.NodeName
