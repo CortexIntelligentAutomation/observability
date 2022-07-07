@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1657184832931,
+  "iteration": 1657184832942,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2974,8 +2974,8 @@
     ]
   },
   "time": {
-    "from": "2022-07-07T05:07:18.003Z",
-    "to": "2022-07-07T05:14:22.289Z"
+    "from": "now-3h",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
