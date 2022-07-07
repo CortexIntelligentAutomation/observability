@@ -2,7 +2,7 @@ $currentPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 Set-Location $currentPath
 
 $exe = Join-Path $currentPath "promtail-windows-amd64.exe"
-$cfg = Join-Path $currentPath "promtail-local-config.yaml"
+$cfg = '"""{0}"""' -f (Join-Path $currentPath "promtail-local-config.yaml") # Path wrapped in quotes in case of spaces
 $logs = Join-Path $currentPath "logs.txt"
 
 .\nssm.exe install Promtail $exe --config.file=$cfg

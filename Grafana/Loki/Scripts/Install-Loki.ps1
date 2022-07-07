@@ -2,7 +2,7 @@ $currentPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 Set-Location $currentPath
 
 $exe = Join-Path $currentPath "loki-windows-amd64.exe"
-$cfg = Join-Path $currentPath "loki-local-config.yaml"
+$cfg = '"""{0}"""' -f (Join-Path $currentPath "loki-local-config.yaml") # path wrapped in quotes in case of spaces
 $logs = Join-Path $currentPath "logs.txt"
 
 .\nssm.exe install Loki $exe --config.file=$cfg
