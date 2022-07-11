@@ -8,4 +8,8 @@ $logs = Join-Path $currentPath "logs.txt"
 .\nssm.exe install Loki $exe --config.file=$cfg
 .\nssm.exe set Loki AppStderr $logs
 .\nssm.exe set Loki AppStdout $logs
+.\nssm.exe set Loki AppRotateFiles 1
+.\nssm.exe set Loki AppRotateOnline 1
+.\nssm.exe set Loki AppRotateSeconds 86400
+.\nssm.exe set Loki AppRotateBytes 104857600
 .\nssm.exe set Loki Start SERVICE_AUTO_START
