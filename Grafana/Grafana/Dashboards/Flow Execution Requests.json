@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1653401831290,
+  "iteration": 1657624501089,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -216,7 +216,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" [$__range]))",
+          "expr": "sum(count_over_time({job=\"flows\", RequestStatus=\"Error\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
           "hide": false,
           "legendFormat": "Total Errored Requests",
           "queryType": "instant",
@@ -739,10 +739,20 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" [$Interval]))",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval]))",
           "hide": false,
           "legendFormat": "Errored Requests",
           "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_LOKI}"
+          },
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\",  Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "hide": false,
+          "legendFormat": "Errored Requests Mean Duration (ms)",
+          "refId": "F"
         }
       ],
       "title": "Requests",
@@ -770,7 +780,9 @@
               "Average Duration in ms": true,
               "Average duration in ms": true,
               "Average duration in seconds": false,
+              "Errored Request Mean Duration (ms)": true,
               "Errored Requests": true,
+              "Errored Requests Mean Duration (ms)": true,
               "Max Duration (ms)": true,
               "Max duration in ms": true,
               "Mean Duration (ms)": true,
@@ -817,7 +829,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -977,7 +990,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json [$__range]))",
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range]))",
           "hide": false,
           "legendFormat": "Error Count",
           "queryType": "instant",
@@ -1010,7 +1023,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Max Duration (ms)",
           "queryType": "instant",
@@ -1172,7 +1185,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1478,7 +1492,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -1594,11 +1609,17 @@
       "title": "Errored Requests",
       "transformations": [
         {
+          "id": "filterByRefId",
+          "options": {
+            "include": "E|F"
+          }
+        },
+        {
           "id": "calculateField",
           "options": {
-            "alias": "Mean Duration (s)",
+            "alias": "Errored Requests Mean Duration (s)",
             "binary": {
-              "left": "Mean Duration (ms)",
+              "left": "Errored Requests Mean Duration (ms)",
               "operator": "/",
               "reducer": "sum",
               "right": "1000"
@@ -1614,6 +1635,8 @@
           "options": {
             "excludeByName": {
               "Average duration in ms": true,
+              "Errored Request Mean Duration (ms)": true,
+              "Errored Requests Mean Duration (ms)": true,
               "Max Duration (ms)": true,
               "Mean Duration (ms)": true,
               "Min Duration (ms)": true,
@@ -1661,7 +1684,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1711,7 +1735,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, sum by (FlowName, StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json [$__range])))",
+          "expr": "topk(10, sum by (FlowName, StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
           "hide": false,
           "legendFormat": "Top10 Errored Requests",
           "queryType": "instant",
@@ -1722,7 +1746,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Mean Duration (ms)",
           "queryType": "instant",
@@ -1733,7 +1757,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Min Duration (ms)",
           "queryType": "instant",
@@ -1744,7 +1768,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |= \"Error\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Max Duration (ms)",
           "queryType": "instant",
@@ -1950,7 +1974,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2108,6 +2133,7 @@
             "excludeByName": {
               "Average duration in ms": true,
               "Errored Requests": true,
+              "Errored Requests Mean Duration (ms)": true,
               "Flow executions": true,
               "Max Duration (ms)": true,
               "Max duration in ms": true,
@@ -2156,7 +2182,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2429,7 +2456,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2952,13 +2980,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Flow Execution Requests",
   "uid": "o2QeoKQ7z",
-  "version": 40,
+  "version": 57,
   "weekStart": ""
 }

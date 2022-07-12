@@ -31,6 +31,7 @@ scrape_configs:
             PackageName: Event.Details.Request.Inputs.packageName
             FlowName: Event.Details.Request.Inputs.flowName
             InitiatorIpAddress: Event.Details.Request.Initiator.IpAddress
+            RequestStatus: '"@l"'
       - labels:
           Type:
           Api:
@@ -42,6 +43,7 @@ scrape_configs:
           PackageName: 
           FlowName:
           InitiatorIpAddress:
+          RequestStatus:
   - match:
       selector: '{job="flows"}|~ "\"Outputs\":.?null"'
       stages:
