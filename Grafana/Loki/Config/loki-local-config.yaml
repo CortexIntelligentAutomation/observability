@@ -4,7 +4,9 @@ server:
   http_listen_port: 3100
   http_server_read_timeout: 10m # To avoid Grafana timeouts when frontend parallelism is lowered.
   http_server_write_timeout: 10m # To avoid Grafana timeouts when frontend parallelism is lowered.
-
+  grpc_server_max_recv_msg_size: 16777216 # To avoid grpc ResourceExhausted error
+  grpc_server_max_send_msg_size: 16777216 # To avoid grpc ResourceExhausted error
+  
 common:
   path_prefix: /tmp/loki
   storage:
