@@ -2,7 +2,7 @@ server:
   disable: true
   
 positions:
-  filename: c:/tmp/positions.yaml # This folder location must be created on disk prior to starting Promtail Windows service.
+  filename: "c:/tmp/positions.yaml" # This folder location must be created on disk prior to starting Promtail Windows service.
 
 clients:
   - url: https://<username>:<password>@<loki host address>:<loki reverse proxy port>/loki/api/v1/push # e.g. https://username:password@hostaddress.com:2100/loki/api/v1/push
