@@ -65,4 +65,4 @@ scrape_configs:
       - localhost
     labels:
       job: flows
-      __path__: "C:/ProgramData/Cortex/Cortex API Gateway Service/Logs/*.json" # This path must much the location to which logs of the Cortex API Gateway Service are written to.
+      __path__: "C:/ProgramData/Cortex/Cortex API Gateway Service/Logs/**/ServiceFabricHttpEventLog-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]{_[0-9][0-9][0-9],}.json" # This path must much the location to which logs of the Cortex API Gateway Service are written to. Glob syntax and pattern matching is supported, see https://github.com/bmatcuk/doublestar. 
