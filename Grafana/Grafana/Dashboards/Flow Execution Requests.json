@@ -204,7 +204,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
           "hide": false,
           "legendFormat": "Total Requests",
           "queryType": "instant",
@@ -216,7 +216,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", RequestStatus=\"Error\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
+          "expr": "sum(count_over_time({job=\"flows\", RequestStatus=\"Error\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$__range]))",
           "hide": false,
           "legendFormat": "Total Errored Requests",
           "queryType": "instant",
@@ -481,7 +481,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]) by (Api)",
+          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]) by (Api)",
           "hide": false,
           "legendFormat": "Total Requests",
           "queryType": "instant",
@@ -700,7 +700,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval]))",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval]))",
           "legendFormat": "Total Requests",
           "refId": "A"
         },
@@ -709,7 +709,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
           "legendFormat": "Mean Duration (ms)",
           "refId": "B"
@@ -719,7 +719,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
           "legendFormat": "Min Duration (ms)",
           "refId": "C"
@@ -729,7 +729,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
           "legendFormat": "Max Duration (ms)",
           "refId": "D"
@@ -739,7 +739,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval]))",
+          "expr": "sum(count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} [$Interval]))",
           "hide": false,
           "legendFormat": "Errored Requests",
           "refId": "E"
@@ -749,7 +749,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\",  Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\",  Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval]))",
           "hide": false,
           "legendFormat": "Errored Requests Mean Duration (ms)",
           "refId": "F"
@@ -935,7 +935,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
+          "expr": "topk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
           "hide": false,
           "legendFormat": "Top 10 Executions",
           "queryType": "instant",
@@ -946,7 +946,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
+          "expr": "bottomk(10, sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
           "hide": false,
           "legendFormat": "Bottom 10 Executions",
           "queryType": "instant",
@@ -957,7 +957,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
+          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
           "hide": false,
           "legendFormat": "Top 10 Mean Duration (ms)",
           "queryType": "instant",
@@ -968,7 +968,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
+          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range])))",
           "hide": false,
           "legendFormat": "Bottom 10 Mean Duration (ms)",
           "queryType": "instant",
@@ -979,7 +979,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range]))",
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range]))",
           "hide": false,
           "legendFormat": "Total Count",
           "queryType": "instant",
@@ -990,7 +990,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range]))",
+          "expr": "sum by (FlowName) (count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range]))",
           "hide": false,
           "legendFormat": "Error Count",
           "queryType": "instant",
@@ -1001,7 +1001,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Mean Duration (ms)",
           "queryType": "instant",
@@ -1012,7 +1012,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Min Duration (ms)",
           "queryType": "instant",
@@ -1023,7 +1023,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Max Duration (ms)",
           "queryType": "instant",
@@ -1735,7 +1735,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, sum by (FlowName, StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
+          "expr": "topk(10, sum by (FlowName, StatusCode, Result) (count_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json [$__range])))",
           "hide": false,
           "legendFormat": "Top10 Errored Requests",
           "queryType": "instant",
@@ -1746,7 +1746,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Mean Duration (ms)",
           "queryType": "instant",
@@ -1757,7 +1757,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Min Duration (ms)",
           "queryType": "instant",
@@ -1768,7 +1768,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "Max Duration (ms)",
           "queryType": "instant",
@@ -2723,14 +2723,14 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\"}, Tenant)",
         "hide": 0,
         "includeAll": true,
         "label": "",
         "multi": true,
         "name": "Tenant",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\"}, Tenant)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\"}, Tenant)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2744,13 +2744,13 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\"}, System)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "System",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\"}, System)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\"}, System)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2767,13 +2767,13 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "Node",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\"}, Node)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2787,14 +2787,14 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
         "hide": 0,
         "includeAll": true,
         "label": "Package Name",
         "multi": true,
         "name": "PackageName",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}, PackageName)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2808,14 +2808,14 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
         "hide": 0,
         "includeAll": true,
         "label": "Flow Name",
         "multi": true,
         "name": "FlowName",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}, FlowName)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2829,14 +2829,14 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
         "hide": 0,
         "includeAll": true,
         "label": "Status Code",
         "multi": true,
         "name": "StatusCode",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}, StatusCode)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2853,14 +2853,14 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, Result)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, Result)",
         "hide": 0,
         "includeAll": true,
         "label": "Result",
         "multi": true,
         "name": "Result",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, Result)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\"}, Result)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2877,14 +2877,14 @@
           "type": "loki",
           "uid": "${DS_LOKI}"
         },
-        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
+        "definition": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
         "hide": 0,
         "includeAll": true,
         "label": "Initiator IP Address",
         "multi": true,
         "name": "Initiator",
         "options": [],
-        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.ExecutionsController.ExecuteFlowSync\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
+        "query": "label_values({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\"}, InitiatorIpAddress)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
