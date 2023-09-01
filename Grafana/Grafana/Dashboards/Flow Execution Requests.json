@@ -1538,7 +1538,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Mean Duration (s)"
+              "options": "Errored Requests Mean Duration (s)"
             },
             "properties": [
               {
