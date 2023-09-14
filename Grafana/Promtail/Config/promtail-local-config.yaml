@@ -23,7 +23,7 @@ scrape_configs:
           expressions:
             Type: Event.LogType || 'Cortex'
             Api: Event.Type
-            Result: Event.Details.Response.Outputs.Value.Error || 'Success'
+            Result: Success || 'Success'
             StatusCode: Event.Details.Response.StatusCode || 'Unknown'
             Tenant: Event.Details.Request.Inputs.tenant
             System: Event.Details.Request.Inputs.system
@@ -52,12 +52,12 @@ scrape_configs:
             Result: Unknown.Error || 'Unknown'
       - labels:
           Result:
-  - match:
-      selector: '{job="flows"}|~ "\"\\$type\":.?\"\\w+ProblemDetails"'
+ - match:
+      selector: '{job="flows"}|~ "\"\\$type\":\"[.0-9a-zA-Z_, -]*ProblemDetails"'
       stages:
       - json:
           expressions:
-            Result: Event.Details.Response.Outputs.Value."$type" || 'Not Set'
+            Result: Event.Details.Response.Outputs.Value.Title || 'Not Set'
       - labels:
           Result:
   static_configs:
