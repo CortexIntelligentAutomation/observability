@@ -1538,7 +1538,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Mean Duration (s)"
+              "options": "Errored Requests Mean Duration (s)"
             },
             "properties": [
               {
@@ -2864,7 +2864,7 @@
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
