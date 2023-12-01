@@ -52,7 +52,7 @@ scrape_configs:
             Result: Unknown.Error || 'Unknown'
       - labels:
           Result:
- - match:
+  - match:
       selector: '{job="flows"}|~ "\"\\$type\":\"[.0-9a-zA-Z_, -]*ProblemDetails"'
       stages:
       - json:
