@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.3"
+      "version": "8.5.4"
     },
     {
       "type": "datasource",
@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1653401864629,
+  "iteration": 1707985934462,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -146,7 +146,7 @@
         "content": "# Overview  \r\nKey platform health metrics for the specified time range.  \r\n  \r\n**Note:** The Interval filter does not affect these values.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -205,7 +205,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -317,7 +317,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -405,7 +405,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -489,7 +489,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -544,7 +544,7 @@
         "content": "# Availability\r\nThe availability of the Cortex Innovation platform.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -766,7 +766,7 @@
         "content": "# Requests\r\nRequests processed by the Cortex Innovation platform during the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -1025,7 +1025,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -1043,7 +1043,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "AvgDuration",
           "queryType": "instant",
@@ -1054,7 +1054,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "MinDuration",
           "queryType": "instant",
@@ -1065,7 +1065,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$__range]))",
           "hide": false,
           "legendFormat": "MaxDuration",
           "queryType": "instant",
@@ -1087,7 +1087,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range])))",
+          "expr": "topk(10, avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$__range])))",
           "hide": false,
           "legendFormat": "Top10 Response Durations",
           "queryType": "instant",
@@ -1254,7 +1254,7 @@
         "content": "# Errors\r\nErrored request history for the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -1510,7 +1510,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -1671,7 +1671,7 @@
         "content": "# Duration\r\nRequest duration history for the specified time range.\r\n\r\nNote: Certain APIs may take significantly longer than others skewing the results.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -1846,7 +1846,8 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "(avg by (job) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "expr": "(avg by (job) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$Interval])) )",
+          "hide": false,
           "legendFormat": "Average Duration in ms",
           "refId": "A"
         },
@@ -1855,7 +1856,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "(min by (job) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "expr": "(min by (job) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$Interval])) )",
           "hide": false,
           "legendFormat": "Min Duration in ms",
           "refId": "B"
@@ -1865,7 +1866,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "(max by (job) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "expr": "(max by (job) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InMs=\"Event.Duration.InMs\" | unwrap Event_Duration_InMs [$Interval])) )",
           "hide": false,
           "legendFormat": "Max Duration in ms",
           "refId": "C"
@@ -2017,7 +2018,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
