@@ -22,7 +22,7 @@ scrape_configs:
       - json:
           expressions:
             Type: Event.LogType || 'Cortex'
-            Api: Event.Type
+            Api: Event.Method || Event.Type
             Result: Event.Tags.Cortex.Result || 'Success'
             StatusCode: Event.Tags.Cortex."Http.Response.StatusCode" || Event.Details.Response.StatusCode || 'Unknown'
             Tenant: Event.Tags.Cortex."Tenant.Name" || Event.Details.Request.Inputs.tenant || 'Unknown'
