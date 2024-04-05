@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.3"
+      "version": "8.5.4"
     },
     {
       "type": "datasource",
@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1653401864629,
+  "iteration": 1711103397690,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -146,7 +146,7 @@
         "content": "# Overview  \r\nKey platform health metrics for the specified time range.  \r\n  \r\n**Note:** The Interval filter does not affect these values.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -205,7 +205,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -317,7 +317,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -405,7 +405,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -484,12 +484,12 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [],
-          "fields": "/^Mean Request Duration $/",
+          "fields": "/^Value \\#A$/",
           "values": false
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -497,33 +497,16 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]) by (job)",
+          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InSeconds\\\":.?\" | json | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]) by (job)",
           "hide": false,
-          "legendFormat": "Mean Duration (ms)",
+          "legendFormat": "Mean Duration (s)",
           "queryType": "instant",
           "refId": "A",
           "resolution": 1
         }
       ],
       "title": "Mean Request Duration",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Request Duration ",
-            "binary": {
-              "left": "Value #A",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        }
-      ],
+      "transformations": [],
       "transparent": true,
       "type": "stat"
     },
@@ -544,7 +527,7 @@
         "content": "# Availability\r\nThe availability of the Cortex Innovation platform.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -766,7 +749,7 @@
         "content": "# Requests\r\nRequests processed by the Cortex Innovation platform during the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.3",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -818,7 +801,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "orange",
@@ -1025,7 +1009,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -1043,9 +1027,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InSeconds\\\":.?\" | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "AvgDuration",
+          "legendFormat": "Mean Duration (s)",
           "queryType": "instant",
           "refId": "B"
         },
@@ -1054,9 +1038,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InSeconds\\\":.?\" | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "MinDuration",
+          "legendFormat": "Min Duration (s)",
           "queryType": "instant",
           "refId": "C"
         },
@@ -1065,9 +1049,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InSeconds\\\":.?\" | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "MaxDuration",
+          "legendFormat": "Max Duration (s)",
           "queryType": "instant",
           "refId": "D"
         },
@@ -1087,7 +1071,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InMs\\\":.?\" | json | unwrap Event_Duration_InMs [$__range])))",
+          "expr": "topk(10, avg by (StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} |~ \"\\\"InSeconds\\\":.?\" | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range])))",
           "hide": false,
           "legendFormat": "Top10 Response Durations",
           "queryType": "instant",
@@ -1112,97 +1096,33 @@
           "options": {}
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Avg Duration (s)",
-            "binary": {
-              "left": "Value #B",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #C",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #D",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "StatusCode": false,
-              "Time": true,
               "Value #A": false,
-              "Value #B": true,
-              "Value #C": true,
-              "Value #D": true,
               "Value #E": true,
               "Value #F": true,
               "Value #G": true
             },
             "indexByName": {
-              "Avg Duration (s)": 5,
-              "Max Duration (s)": 9,
-              "Min Duration (s)": 7,
-              "Result": 2,
-              "StatusCode": 1,
+              "Result": 1,
+              "StatusCode": 2,
               "Time": 0,
               "Value #A": 3,
               "Value #B": 4,
-              "Value #C": 6,
-              "Value #D": 8,
-              "Value #E": 10,
-              "Value #F": 12,
-              "Value #G": 11
+              "Value #C": 5,
+              "Value #D": 6,
+              "Value #E": 7,
+              "Value #F": 8,
+              "Value #G": 9
             },
             "renameByName": {
-              "Avg Duration (s)": "Mean Duration (s)",
-              "Avg Duration Seconds": "Avg Duration (s)",
-              "ErrorType": "Result",
-              "FlowName": "Flow Name",
+              "Result": "",
               "StatusCode": "Status Code",
-              "Time": "",
               "Value #A": "Total Count",
-              "Value #B": "Avg Duration",
-              "Value #C": "Min Duration",
-              "Value #D": "Max Duration",
-              "Value #E": "",
-              "Value #F": "",
-              "{FlowName=\"AllTranslationErrors\"}": ""
+              "Value #B": "Mean Duration (s)",
+              "Value #C": "Min Duration (s)",
+              "Value #D": "Max Duration (s)"
             }
           }
         },
@@ -1254,7 +1174,7 @@
         "content": "# Errors\r\nErrored request history for the specified time range.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -1304,7 +1224,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -1468,7 +1389,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1510,7 +1432,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -1671,7 +1593,7 @@
         "content": "# Duration\r\nRequest duration history for the specified time range.\r\n\r\nNote: Certain APIs may take significantly longer than others skewing the results.",
         "mode": "markdown"
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "transparent": true,
       "type": "text"
     },
@@ -1720,7 +1642,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1846,8 +1769,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "(avg by (job) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
-          "legendFormat": "Average Duration in ms",
+          "expr": "(avg by (job) (avg_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval])) )",
+          "hide": false,
+          "legendFormat": "Mean Duration (s)",
           "refId": "A"
         },
         {
@@ -1855,9 +1779,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "(min by (job) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "expr": "(min by (job) (min_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval])) )",
           "hide": false,
-          "legendFormat": "Min Duration in ms",
+          "legendFormat": "Min Duration (s)",
           "refId": "B"
         },
         {
@@ -1865,91 +1789,14 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "(max by (job) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$Interval])) )",
+          "expr": "(max by (job) (max_over_time({job=\"flows\", Type=\"Cortex\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", Api=~\"$API\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval])) )",
           "hide": false,
-          "legendFormat": "Max Duration in ms",
+          "legendFormat": "Max Duration (s)",
           "refId": "C"
         }
       ],
       "title": "Request Duration",
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Average Duration in ms",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Max Duration in ms",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Min Duration in ms",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Average Duration in ms": true,
-              "Average duration in ms": true,
-              "Flow executions": true,
-              "Max Duration (ms)": true,
-              "Max Duration in ms": true,
-              "Max duration in ms": true,
-              "Mean Duration (ms)": true,
-              "Min Duration (ms)": true,
-              "Min Duration in ms": true,
-              "Min duration in ms": true
-            },
-            "indexByName": {
-              "Average duration in ms": 4,
-              "Flow executions": 1,
-              "Max Duration (s)": 7,
-              "Max duration in ms": 3,
-              "Mean Duration (s)": 5,
-              "Min Duration (s)": 6,
-              "Min duration in ms": 2,
-              "Time": 0
-            },
-            "renameByName": {}
-          }
-        }
-      ],
+      "transformations": [],
       "transparent": true,
       "type": "timeseries"
     },
@@ -1975,7 +1822,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2017,7 +1865,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.2",
+      "pluginVersion": "8.5.4",
       "targets": [
         {
           "datasource": {
@@ -2051,55 +1899,6 @@
           }
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Value #F",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #C",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #D",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -2107,25 +1906,22 @@
               "Time": true,
               "Value #A": true,
               "Value #B": true,
-              "Value #C": true,
-              "Value #D": true,
+              "Value #C": false,
+              "Value #D": false,
               "Value #E": true,
-              "Value #F": true
+              "Value #F": false
             },
             "indexByName": {
-              "Max Duration (s)": 9,
-              "Mean Duration (s)": 3,
-              "Min Duration (s)": 7,
               "Result": 2,
               "StatusCode": 1,
               "Time": 0,
-              "Value #A": 4,
-              "Value #B": 11,
+              "Value #A": 3,
+              "Value #B": 9,
               "Value #C": 6,
-              "Value #D": 8,
-              "Value #E": 10,
-              "Value #F": 12,
-              "Value #G": 5
+              "Value #D": 7,
+              "Value #E": 8,
+              "Value #F": 5,
+              "Value #G": 4
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
@@ -2137,10 +1933,10 @@
               "Time": "",
               "Value #A": "",
               "Value #B": "",
-              "Value #C": "Min Duration",
-              "Value #D": "Max Duration",
+              "Value #C": "Min Duration (s)",
+              "Value #D": "Max Duration (s)",
               "Value #E": "",
-              "Value #F": "",
+              "Value #F": "Mean Duration (s)",
               "Value #G": "Total Count",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
@@ -2425,6 +2221,6 @@
   "timezone": "",
   "title": "Platform Health",
   "uid": "ZAQLulQnk",
-  "version": 108,
+  "version": 12,
   "weekStart": ""
 }

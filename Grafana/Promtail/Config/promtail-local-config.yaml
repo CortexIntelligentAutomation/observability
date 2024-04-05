@@ -22,15 +22,15 @@ scrape_configs:
       - json:
           expressions:
             Type: Event.LogType || 'Cortex'
-            Api: Event.Type
-            Result: Success || 'Success'
-            StatusCode: Event.Details.Response.StatusCode || 'Unknown'
-            Tenant: Event.Details.Request.Inputs.tenant
-            System: Event.Details.Request.Inputs.system
-            Node: Event.Service.NodeName
-            PackageName: Event.Details.Request.Inputs.packageName
-            FlowName: Event.Details.Request.Inputs.flowName
-            InitiatorIpAddress: Event.Details.Request.Initiator.IpAddress
+            Api: Event.Method || Event.Type
+            Result: Event.Tags.Cortex.Result || 'Success'
+            StatusCode: Event.Tags.Cortex."Http.Response.StatusCode" || Event.Details.Response.StatusCode || 'Unknown'
+            Tenant: Event.Tags.Cortex."Tenant.Name" || Event.Details.Request.Inputs.tenant || 'Unknown'
+            System: Event.Tags.Cortex."System.Name" || Event.Details.Request.Inputs.system || 'Unknown'
+            Node: Event.Platform.Node.Name || Event.Service.NodeName || 'Unknown'
+            PackageName: Event.Tags.Cortex."Package.Name" || Event.Details.Request.Inputs.packageName || 'Unknown'
+            FlowName: Event.Tags.Cortex."Flow.Name" || Event.Details.Request.Inputs.flowName || 'Unknown'
+            InitiatorIpAddress: Event.Details.Request.Initiator.IpAddress || 'Unknown'
             RequestStatus: '"@l"'
             Async: Event.Details.Request.Inputs.async || 'false'
       - labels:
@@ -51,7 +51,7 @@ scrape_configs:
       stages:
       - json:
           expressions:
-            Result: Unknown.Error || 'Unknown'
+            Result: Event.Tags.Cortex.Result || 'Unknown'
       - labels:
           Result:
   - match:
@@ -59,9 +59,9 @@ scrape_configs:
       stages:
       - json:
           expressions:
-            Result: Event.Details.Response.Outputs.Value.Title || 'Not Set'
+            Result: Event.Tags.Cortex.Result || Event.Details.Response.Outputs.Value.Title || 'Not Set'
       - labels:
-          Result:
+          Result:          
   static_configs:
   - targets:
       - localhost

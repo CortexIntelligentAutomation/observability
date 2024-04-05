@@ -74,7 +74,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1704797109378,
+  "iteration": 1711099555957,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -468,7 +468,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [],
-          "fields": "/^Mean Request Duration$/",
+          "fields": "/^Mean Duration \\(s\\)$/",
           "values": false
         },
         "textMode": "auto"
@@ -481,7 +481,7 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json | unwrap Event_Duration_InMs [$__range]) by (Api)",
+          "expr": "avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]) by (Api)",
           "hide": false,
           "legendFormat": "Total Requests",
           "queryType": "instant",
@@ -500,23 +500,7 @@
             },
             "indexByName": {},
             "renameByName": {
-              "Value #A": "Mean Duration (ms)"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Request Duration",
-            "binary": {
-              "left": "Mean Duration (ms)",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
+              "Value #A": "Mean Duration (s)"
             }
           }
         }
@@ -709,9 +693,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval]))",
           "hide": false,
-          "legendFormat": "Mean Duration (ms)",
+          "legendFormat": "Mean Duration (s)",
           "refId": "B"
         },
         {
@@ -719,9 +703,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "min by (Type) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval]))",
           "hide": false,
-          "legendFormat": "Min Duration (ms)",
+          "legendFormat": "Min Duration (s)",
           "refId": "C"
         },
         {
@@ -729,9 +713,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "max by (Type) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval]))",
           "hide": false,
-          "legendFormat": "Max Duration (ms)",
+          "legendFormat": "Max Duration (s)",
           "refId": "D"
         },
         {
@@ -749,30 +733,14 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\",  Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$Interval]))",
+          "expr": "avg by (Type) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\",  Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$Interval]))",
           "hide": false,
-          "legendFormat": "Errored Requests Mean Duration (ms)",
+          "legendFormat": "Errored Requests Mean Duration (s)",
           "refId": "F"
         }
       ],
       "title": "Requests",
       "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Mean Duration (ms)",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
         {
           "id": "organize",
           "options": {
@@ -780,13 +748,13 @@
               "Average Duration in ms": true,
               "Average duration in ms": true,
               "Average duration in seconds": false,
-              "Errored Request Mean Duration (ms)": true,
               "Errored Requests": true,
-              "Errored Requests Mean Duration (ms)": true,
+              "Errored Request Mean Duration (s)": true,
               "Max Duration (ms)": true,
+              "Max Duration (s)": true,
               "Max duration in ms": true,
               "Mean Duration (ms)": true,
-              "Min Duration (ms)": true,
+              "Min Duration (s)": true,
               "Min duration in ms": true
             },
             "indexByName": {
@@ -874,7 +842,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Mean Duration (s)"
+              "options": "Value #G"
             },
             "properties": [
               {
@@ -886,7 +854,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Min Duration (s)"
+              "options": "Value #H"
             },
             "properties": [
               {
@@ -898,7 +866,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Max Duration (s)"
+              "options": "Value #I"
             },
             "properties": [
               {
@@ -957,9 +925,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range])))",
+          "expr": "topk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range])))",
           "hide": false,
-          "legendFormat": "Top 10 Mean Duration (ms)",
+          "legendFormat": "Top 10 Mean Duration (s)",
           "queryType": "instant",
           "refId": "C"
         },
@@ -968,9 +936,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range])))",
+          "expr": "bottomk(10, avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range])))",
           "hide": false,
-          "legendFormat": "Bottom 10 Mean Duration (ms)",
+          "legendFormat": "Bottom 10 Mean Duration (s)",
           "queryType": "instant",
           "refId": "D"
         },
@@ -1001,9 +969,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (FlowName) (avg_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "Mean Duration (ms)",
+          "legendFormat": "Mean Duration (s)",
           "queryType": "instant",
           "refId": "G"
         },
@@ -1012,9 +980,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (FlowName) (min_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "Min Duration (ms)",
+          "legendFormat": "Min Duration (s)",
           "queryType": "instant",
           "refId": "H"
         },
@@ -1023,9 +991,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName) (max_over_time({job=\"flows\", Type=\"Cortex\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "Max Duration (ms)",
+          "legendFormat": "Max Duration (s)",
           "queryType": "instant",
           "refId": "I"
         }
@@ -1035,55 +1003,6 @@
         {
           "id": "merge",
           "options": {}
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Value #G",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #H",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #I",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
         },
         {
           "id": "organize",
@@ -1096,9 +1015,9 @@
               "Value #D": true,
               "Value #E": true,
               "Value #F": true,
-              "Value #G": true,
-              "Value #H": true,
-              "Value #I": true
+              "Value #G": false,
+              "Value #H": false,
+              "Value #I": false
             },
             "indexByName": {
               "FlowName": 1,
@@ -1128,6 +1047,9 @@
               "Value #C": "",
               "Value #D": "",
               "Value #E": "",
+              "Value #G": "Mean Duration (s)",
+              "Value #H": "Min Duration (s)",
+              "Value #I": "Max Duration (s)",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -1298,55 +1220,6 @@
           "options": {}
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Value #G",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #H",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #I",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -1357,9 +1230,9 @@
               "Value #D": true,
               "Value #E": true,
               "Value #F": true,
-              "Value #G": true,
-              "Value #H": true,
-              "Value #I": true
+              "Value #G": false,
+              "Value #H": false,
+              "Value #I": false
             },
             "indexByName": {
               "FlowName": 1,
@@ -1390,6 +1263,9 @@
               "Value #D": "",
               "Value #E": "",
               "Value #F": "",
+              "Value #G": "Mean Duration (s)",
+              "Value #H": "Min Duration (s)",
+              "Value #I": "Max Duration (s)",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -1746,9 +1622,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "avg by (FlowName, StatusCode, Result) (avg_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "Mean Duration (ms)",
+          "legendFormat": "Mean Duration (s)",
           "queryType": "instant",
           "refId": "B"
         },
@@ -1757,9 +1633,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "min by (FlowName, StatusCode, Result) (min_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "Min Duration (ms)",
+          "legendFormat": "Min Duration (s)",
           "queryType": "instant",
           "refId": "C"
         },
@@ -1768,9 +1644,9 @@
             "type": "loki",
             "uid": "${DS_LOKI}"
           },
-          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json | unwrap Event_Duration_InMs [$__range]))",
+          "expr": "max by (FlowName, StatusCode, Result) (max_over_time({job=\"flows\", Type=\"Cortex\", RequestStatus=\"Error\", Api=\"Cortex.ServiceFabric.Service.ApiGateway.Controllers.StartExecutionsController.ExecuteFlow\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", StatusCode=~\"$StatusCode\", Result=~\"$Result\", InitiatorIpAddress=~\"$Initiator\", Async=~\"$Async\"} | json Event_Duration_InSeconds=\"Event.Duration.InSeconds\" | unwrap Event_Duration_InSeconds | __error__!=\"SampleExtractionErr\" [$__range]))",
           "hide": false,
-          "legendFormat": "Max Duration (ms)",
+          "legendFormat": "Max Duration (s)",
           "queryType": "instant",
           "refId": "D"
         }
@@ -1782,63 +1658,14 @@
           "options": {}
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Value #B",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #C",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #D",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
               "Time": true,
               "Value #A": false,
-              "Value #B": true,
-              "Value #C": true,
-              "Value #D": true,
+              "Value #B": false,
+              "Value #C": false,
+              "Value #D": false,
               "Value #E": true
             },
             "indexByName": {
@@ -1861,9 +1688,9 @@
               "StatusCode": "Status Code",
               "Time": "",
               "Value #A": "Error Count",
-              "Value #B": "",
-              "Value #C": "",
-              "Value #D": "",
+              "Value #B": "Mean Duration (s)",
+              "Value #C": "Min Duration (s)",
+              "Value #D": "Max Duration (s)",
               "Value #F": "Total Count",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
@@ -2080,52 +1907,8 @@
       "title": "Request Duration",
       "transformations": [
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Mean Duration (ms)",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Max Duration (ms)",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Min Duration (ms)",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
+          "id": "seriesToColumns",
+          "options": {}
         },
         {
           "id": "organize",
@@ -2134,6 +1917,7 @@
               "Average duration in ms": true,
               "Errored Requests": true,
               "Errored Requests Mean Duration (ms)": true,
+              "Errored Requests Mean Duration (s)": true,
               "Flow executions": true,
               "Max Duration (ms)": true,
               "Max duration in ms": true,
@@ -2153,7 +1937,9 @@
               "Time": 0,
               "Total Requests": 4
             },
-            "renameByName": {}
+            "renameByName": {
+              "Mean Duration (s)": ""
+            }
           }
         }
       ],
@@ -2324,55 +2110,6 @@
           }
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Value #C",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #H",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #I",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -2383,25 +2120,22 @@
               "Value #D": true,
               "Value #E": false,
               "Value #F": false,
-              "Value #G": true,
-              "Value #H": true,
-              "Value #I": true
+              "Value #G": false,
+              "Value #H": false,
+              "Value #I": false
             },
             "indexByName": {
               "FlowName": 1,
-              "Max Duration (s)": 6,
-              "Mean Duration (s)": 2,
-              "Min Duration (s)": 5,
               "Time": 0,
-              "Value #A": 7,
-              "Value #B": 8,
-              "Value #C": 9,
-              "Value #D": 10,
+              "Value #A": 5,
+              "Value #B": 6,
+              "Value #C": 7,
+              "Value #D": 8,
               "Value #E": 3,
               "Value #F": 4,
-              "Value #G": 11,
-              "Value #H": 12,
-              "Value #I": 13
+              "Value #G": 2,
+              "Value #H": 9,
+              "Value #I": 10
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
@@ -2415,6 +2149,9 @@
               "Value #D": "",
               "Value #E": "Total Count",
               "Value #F": "Error Count",
+              "Value #G": "Mean Duration (s)",
+              "Value #H": "Min Duration (s)",
+              "Value #I": "Max Duration (s)",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -2598,55 +2335,6 @@
           }
         },
         {
-          "id": "calculateField",
-          "options": {
-            "alias": "Mean Duration (s)",
-            "binary": {
-              "left": "Value #D",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Min Duration (s)",
-            "binary": {
-              "left": "Value #H",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Max Duration (s)",
-            "binary": {
-              "left": "Value #I",
-              "operator": "/",
-              "reducer": "sum",
-              "right": "1000"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
@@ -2656,25 +2344,22 @@
               "Value #C": true,
               "Value #D": true,
               "Value #F": false,
-              "Value #G": true,
-              "Value #H": true,
-              "Value #I": true
+              "Value #G": false,
+              "Value #H": false,
+              "Value #I": false
             },
             "indexByName": {
               "FlowName": 1,
-              "Max Duration (s)": 6,
-              "Mean Duration (s)": 2,
-              "Min Duration (s)": 5,
               "Time": 0,
-              "Value #A": 7,
-              "Value #B": 8,
-              "Value #C": 9,
-              "Value #D": 10,
+              "Value #A": 5,
+              "Value #B": 6,
+              "Value #C": 7,
+              "Value #D": 8,
               "Value #E": 3,
               "Value #F": 4,
-              "Value #G": 11,
-              "Value #H": 12,
-              "Value #I": 13
+              "Value #G": 2,
+              "Value #H": 9,
+              "Value #I": 10
             },
             "renameByName": {
               "Avg Duration (s)": "Mean Duration (s)",
@@ -2690,6 +2375,9 @@
               "Value #D": "",
               "Value #E": "Total Count",
               "Value #F": "Error Count",
+              "Value #G": "Mean Duration (s)",
+              "Value #H": "Min Duration (s)",
+              "Value #I": "Max Duration (s)",
               "{FlowName=\"AllTranslationErrors\"}": ""
             }
           }
@@ -3008,6 +2696,6 @@
   "timezone": "",
   "title": "Flow Execution Requests",
   "uid": "o2QeoKQ7z",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
