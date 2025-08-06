@@ -1,0 +1,113 @@
+local.file_match "ApiGateway" {
+	path_targets = [{
+		__address__ = "localhost",
+		__path__    = "C:/ProgramData/Cortex/API Gateway Service/Logs/**/ServiceFabricHttpEventLog-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]{_[0-9][0-9][0-9],}.json",
+		job         = "flows",
+	}]
+}
+
+loki.process "ApiGateway" {
+	forward_to = [loki.write.default.receiver]
+
+	stage.json {
+		expressions = {
+			Timestamp = "\"@t\"",
+		}
+	}
+
+	stage.timestamp {
+		source = "Timestamp"
+		format = "RFC3339Nano"
+	}
+
+	stage.match {
+		selector = "{job=\"flows\"}|~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]ApiGateway\\\"\""
+
+		stage.json {
+			expressions = {
+				Api                = "Event.Method || Event.Type",
+				Async              = "Event.Details.Request.Inputs.async || 'false'",
+				FlowName           = "Event.Tags.Cortex.\"Flow.Name\" || Event.Details.Request.Inputs.flowName || 'Unknown'",
+				InitiatorIpAddress = "Event.Details.Request.Initiator.IpAddress || 'Unknown'",
+				Node               = "Event.Platform.Node.Name || Event.Service.NodeName || 'Unknown'",
+				PackageName        = "Event.Tags.Cortex.\"Package.Name\" || Event.Details.Request.Inputs.packageName || 'Unknown'",
+				RequestStatus      = "\"@l\"",
+				Result             = "Event.Tags.Cortex.Result || 'Success'",
+				StatusCode         = "Event.Tags.Cortex.\"Http.Response.StatusCode\" || Event.Details.Response.StatusCode || 'Unknown'",
+				System             = "Event.Tags.Cortex.\"System.Name\" || Event.Details.Request.Inputs.system || 'Unknown'",
+				Tenant             = "Event.Tags.Cortex.\"Tenant.Name\" || Event.Details.Request.Inputs.tenant || 'Unknown'",
+				Type               = "Event.LogType || 'Cortex'",
+			}
+		}
+
+		stage.labels {
+			values = {
+				Api                = null,
+				Async              = null,
+				FlowName           = null,
+				InitiatorIpAddress = null,
+				Node               = null,
+				PackageName        = null,
+				RequestStatus      = null,
+				Result             = null,
+				StatusCode         = null,
+				System             = null,
+				Tenant             = null,
+				Type               = null,
+			}
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"flows\"}|~ \"\\\"Outputs\\\":.?null\""
+
+		stage.json {
+			expressions = {
+				Result = "Event.Tags.Cortex.Result || 'Unknown'",
+			}
+		}
+
+		stage.labels {
+			values = {
+				Result = null,
+			}
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"flows\"}|~ \"\\\"\\\\$type\\\":\\\"[.0-9a-zA-Z_, -]*ProblemDetails\""
+
+		stage.json {
+			expressions = {
+				Result = "Event.Tags.Cortex.Result || Event.Details.Response.Outputs.Value.Title || 'Not Set'",
+			}
+		}
+
+		stage.labels {
+			values = {
+				Result = null,
+			}
+		}
+	}
+}
+
+loki.source.file "ApiGateway" {
+	targets               = local.file_match.ApiGateway.targets
+	forward_to            = [loki.process.ApiGateway.receiver]
+}
+
+loki.write "default" {
+	endpoint {
+		url = "https://<loki host address>:<loki reverse proxy port>/loki/api/v1/push" 
+		bearer_token_file = "<Config File Path>/auth.secret"
+	}
+	external_labels = {}
+}
+
+
+
+
+
+
+
+
