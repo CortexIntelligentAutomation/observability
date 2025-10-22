@@ -159,7 +159,6 @@ loki.process "ExecutionService" {
 loki.source.file "ExecutionService" {
 	targets               = local.file_match.ExecutionService.targets
 	forward_to            = [loki.process.ExecutionService.receiver]
-	legacy_positions_file = "c:/tmp/positions.yaml"
 }
 
 loki.write "default" {
