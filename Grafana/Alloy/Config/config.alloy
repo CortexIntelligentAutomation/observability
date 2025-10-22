@@ -96,6 +96,71 @@ loki.source.file "ApiGateway" {
 	forward_to            = [loki.process.ApiGateway.receiver]
 }
 
+local.file_match "ExecutionService" {
+	path_targets = [{
+		__address__ = "localhost",
+		__path__    = "C:/ProgramData/Cortex/Execution Service/Logs/**/*.json",
+		job         = "ExecutionService",
+	}]
+}
+
+loki.process "ExecutionService" {
+	forward_to = [loki.write.default.receiver]
+
+	stage.json {
+		expressions = {
+			level     = "\"@l\"",
+			timestamp = "\"@t\"",
+		}
+	}
+
+	stage.timestamp {
+		source = "timestamp"
+		format = "RFC3339Nano"
+	}
+
+	stage.match {
+		selector = "{job=\"ExecutionService\"}|~ \"\\\"SourceContext\\\":.?\\\"Cortex[.]ServiceFabric[.]Service[.]Execution[.]ExecutionService\\\"\""
+
+		stage.json {
+			expressions = {
+				BlockName          = "Event.Tags.Cortex.\"Block.Name\" || 'Unknown'",
+				BlockResult        = "Event.Tags.Cortex.\"Block.Result.Status\" || 'Unknown'",
+				ExceptionCategory  = "Event.Tags.Cortex.\"Exception.Category\" || 'N/A'",
+				ExceptionErrorCode = "Event.Tags.Cortex.\"Exception.ErrorCode\" || 'N/A'",
+				ExceptionType      = "Event.Tags.Cortex.\"Exception.Type\" || 'N/A'",
+				FlowName           = "Event.Tags.Cortex.\"Flow.Name\" || 'Unknown'",
+				Node               = "Event.Platform.Node.Name || 'Unknown'",
+				PackageName        = "Event.Tags.Cortex.\"Package.Name\" || 'Unknown'",
+				System             = "Event.Tags.Cortex.\"System.Name\" || 'Unknown'",
+				Tenant             = "Event.Tags.Cortex.\"Tenant.Name\" || 'Unknown'",
+				Type               = "Event.LogType || 'Cortex'",
+			}
+		}
+
+		stage.labels {
+			values = {
+				BlockName          = null,
+				BlockResult        = null,
+				ExceptionCategory  = null,
+				ExceptionErrorCode = null,
+				ExceptionType      = null,
+				FlowName           = null,
+				Node               = null,
+				PackageName        = null,
+				System             = null,
+				Tenant             = null,
+				Type               = null,
+			}
+		}
+	}
+}
+
+loki.source.file "ExecutionService" {
+	targets               = local.file_match.ExecutionService.targets
+	forward_to            = [loki.process.ExecutionService.receiver]
+}
+
 loki.write "default" {
 	endpoint {
 		url = "https://<loki host address>:<loki reverse proxy port>/loki/api/v1/push" 
