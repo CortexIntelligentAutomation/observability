@@ -27,6 +27,11 @@ query_range:
         max_size_mb: 100
   parallelise_shardable_queries: false
 
+compactor:
+  retention_enabled: true
+  delete_request_store: filesystem
+  working_directory: /data/retention
+
 schema_config:
   configs:
     - from: 2020-10-24
@@ -47,6 +52,7 @@ limits_config:
   max_query_length: 0h # Controls max time range for queries. Default is 721h.
   split_queries_by_interval: 24h
   query_timeout: 10m # To avoid Grafana timeouts when frontend parallelism is lowered.
+  retention_period: 4380h # Length of time to retain Loki logs for. Default is 4380h (6 months)
   
 querier:
   max_concurrent: 4
