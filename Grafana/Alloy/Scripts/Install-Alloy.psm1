@@ -333,8 +333,7 @@ function Set-LocalSecurityPolicy {
     process {
         Write-Output "Verifying Local Security Policy for $Username"
 
-        $FQDN = (Get-ADDomainController -Discover -DomainName $Username.substring(0, $Username.IndexOf("\"))).Domain
-        $UserSID = (Get-ADUser -ErrorAction Stop -Server "$FQDN" -Identity $Username.substring($Username.IndexOf("\") + 1)).SID
+        $UserSID = (New-Object System.Security.Principal.NTAccount($Username.substring($Username.IndexOf("\") + 1))).Translate([System.Security.Principal.SecurityIdentifier]).Value
 
         $secEditConfigurationExport = Export-LocalSecurityPolicy
 		
