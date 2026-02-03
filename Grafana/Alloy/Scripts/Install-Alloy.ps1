@@ -6,7 +6,7 @@
     .\Install-Alloy.ps1
 
 .NOTES
-    Version : 1.0.0.25340
+    Version : 1.0.1.26130
 #>
 
 Import-Module "$PSScriptRoot\Install-Alloy.psm1"

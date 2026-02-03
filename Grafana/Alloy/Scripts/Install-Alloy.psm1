@@ -3,7 +3,7 @@
     Functions for installing Grafana Alloy.
 
 .NOTES
-    Version : 1.0.0.25340
+    Version : 1.0.1.26130
 #>
 
 #region Internal Functions
@@ -155,7 +155,16 @@ function Test-ServiceUser {
 	)
 	
     process {
-		(New-Object DirectoryServices.DirectoryEntry "",$($ServiceUser.UserName),$($ServiceUser.GetNetworkCredential().Password)).psbase.name -ne $null
+		Add-Type -AssemblyName System.DirectoryServices.AccountManagement
+
+		$contextType = [System.DirectoryServices.AccountManagement.ContextType]::Domain
+		$domainName, $Username = $ServiceUser.Username -split '\\'
+		$password = $ServiceUser.GetNetworkCredential().Password
+				
+		$principalContext = New-Object System.DirectoryServices.AccountManagement.PrincipalContext($contextType, $domainName)
+		
+		$isValid = $principalContext.ValidateCredentials($userName, $password)
+		$isValid
 	}
 }
 
@@ -332,9 +341,7 @@ function Set-LocalSecurityPolicy {
 
     process {
         Write-Output "Verifying Local Security Policy for $Username"
-
-        $FQDN = (Get-ADDomainController -Discover -DomainName $Username.substring(0, $Username.IndexOf("\"))).Domain
-        $UserSID = (Get-ADUser -ErrorAction Stop -Server "$FQDN" -Identity $Username.substring($Username.IndexOf("\") + 1)).SID
+        $UserSID = (New-Object System.Security.Principal.NTAccount($Username.substring($Username.IndexOf("\") + 1))).Translate([System.Security.Principal.SecurityIdentifier]).Value
 
         $secEditConfigurationExport = Export-LocalSecurityPolicy
 		
