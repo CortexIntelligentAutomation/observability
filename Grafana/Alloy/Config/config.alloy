@@ -135,6 +135,9 @@ loki.process "ExecutionService" {
 				System             = "Event.Tags.Cortex.\"System.Name\" || 'Unknown'",
 				Tenant             = "Event.Tags.Cortex.\"Tenant.Name\" || 'Unknown'",
 				Type               = "Event.LogType || 'Cortex'",
+				FlowResult         = "Event.Tags.Cortex."Execution.Result.Status" || 'N/A'",
+                Method             = "Event.LogType || 'Unknown'",
+
 			}
 		}
 
@@ -151,6 +154,24 @@ loki.process "ExecutionService" {
 				System             = null,
 				Tenant             = null,
 				Type               = null,
+				FlowResult         = null,
+				Method             = null,
+			}
+		}
+	}
+
+	stage.match {
+		selector = "{job=\"ExecutionService\"}|~ "\"Method\":.?\"Cortex.FlowEngine.Execution.Engine.Run\"""
+
+		stage.json {
+			expressions = {
+                Method             = "Event.LogType || 'FlowExecution'",
+			}
+		}
+
+		stage.labels {
+			values = {
+				Method             = null,
 			}
 		}
 	}
