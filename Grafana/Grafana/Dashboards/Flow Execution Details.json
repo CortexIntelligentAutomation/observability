@@ -73,32 +73,28 @@
         "y": 0
       },
       "id": 115,
-      "panels": [
-        {
-          "gridPos": {
-            "h": 11,
-            "w": 24,
-            "x": 0,
-            "y": 1
-          },
-          "id": 66,
-          "options": {
-            "code": {
-              "language": "plaintext",
-              "showLineNumbers": false,
-              "showMiniMap": false
-            },
-            "content": "This dashboard provides the information required to analyse the flow executions and their block executions within the CORTEX platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. |\r\n| Node | List of hosts that processed the requests. |\r\n| Package Name | List of packages. |\r\n| Flow Name | List of flows that have execution requests. |\r\n| Status Code | List of [status codes](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Status_codes) found in the HTTP responses. |\r\n| Result | List of results found in the HTTP responses. |\r\n| Async | Enables filtering on flows that were executed asyncronously or not. |\r\n| Initiator IP Address | List of IP addresses for the initiators of the requests. |\r\n| Custom Filter | Enables filtering on all available values including those that are not exposed by default. |\r\n\r\nAll filters (excluding Custom Filter) will display their available options dependant on the preceeding filters selected.\r\n",
-            "mode": "markdown"
-          },
-          "pluginVersion": "12.1.1",
-          "targets": [],
-          "title": "",
-          "type": "text"
-        }
-      ],
       "title": "Description",
       "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 66,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "This dashboard provides the information required to analyse the flow executions and their block executions within the CORTEX platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. |\r\n| Node | List of hosts that processed the requests. |\r\n| Package Name | List of packages. |\r\n| Flow Name | List of flows that have execution requests. |\r\n| Result | List of results found in the HTTP responses. |\r\n| Custom Filter | Enables filtering on all available values including those that are not exposed by default. |\r\n\r\nAll filters (excluding Custom Filter) will display their available options dependant on the preceeding filters selected.\r\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.1.1",
+      "type": "text"
     },
     {
       "collapsed": false,
@@ -106,7 +102,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 12
       },
       "id": 116,
       "title": "Dashboard",
@@ -117,7 +113,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 2
+        "y": 13
       },
       "id": 110,
       "options": {
@@ -248,7 +244,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 16
       },
       "id": 114,
       "options": {
@@ -398,7 +394,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 28
       },
       "id": 111,
       "options": {
@@ -599,7 +595,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 31
       },
       "id": 7,
       "options": {
@@ -1054,6 +1050,6 @@
   "timezone": "Europe/London",
   "title": "Flow Execution Details",
   "uid": "01d26a3a-8de7-4874-854e-242ff2dd590a",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
