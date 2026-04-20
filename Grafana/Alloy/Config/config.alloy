@@ -1,7 +1,8 @@
 local.file_match "ApiGateway" {
 	path_targets = [{
 		__address__ = "localhost",
-		__path__    = "C:/ProgramData/Cortex/API Gateway Service/Logs/**/ServiceFabricHttpEventLog-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]{_[0-9][0-9][0-9],}.json",
+		// This path must match the location to which logs of the API Gateway Service are written to. Glob syntax and pattern matching is supported, see https://github.com/bmatcuk/doublestar
+		__path__    = "C:/ProgramData/Cortex/API Gateway Service/Logs/**/ServiceFabricHttpEventLog-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]{,_[0-9][0-9][0-9]}.json",
 		job         = "flows",
 	}]
 }
@@ -99,6 +100,7 @@ loki.source.file "ApiGateway" {
 local.file_match "ExecutionService" {
 	path_targets = [{
 		__address__ = "localhost",
+		// This path must match the location to which logs of the Execution Service are written to. Glob syntax and pattern matching is supported, see https://github.com/bmatcuk/doublestar
 		__path__    = "C:/ProgramData/Cortex/Execution Service/Logs/**/*.json",
 		job         = "ExecutionService",
 	}]
@@ -135,6 +137,8 @@ loki.process "ExecutionService" {
 				System             = "Event.Tags.Cortex.\"System.Name\" || 'Unknown'",
 				Tenant             = "Event.Tags.Cortex.\"Tenant.Name\" || 'Unknown'",
 				Type               = "Event.LogType || 'Cortex'",
+                FlowResult         = "Event.Tags.Cortex.\"Execution.Result.Status\" || 'N/A'",
+                Method             = "Event.MethodName || 'Unknown'",
 			}
 		}
 
@@ -151,9 +155,26 @@ loki.process "ExecutionService" {
 				System             = null,
 				Tenant             = null,
 				Type               = null,
+                FlowResult         = null,
+                Method             = null,
 			}
 		}
 	}
+    stage.match {
+        selector = "{job=\"ExecutionService\"}|~ \"\\\"Method\\\":.?\\\"Cortex.FlowEngine.Execution.Engine.Run\\\"\""
+
+        stage.json {
+            expressions = {
+                Method             = "'FlowExecution'",
+            }
+        }
+
+        stage.labels {
+            values = {
+                Method             = null,
+            }
+        }
+    }
 }
 
 loki.source.file "ExecutionService" {

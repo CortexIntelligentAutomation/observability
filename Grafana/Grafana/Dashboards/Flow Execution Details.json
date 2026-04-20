@@ -1,0 +1,1055 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_CORTEX_LOKI",
+      "label": "Cortex Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.1.1"
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 115,
+      "title": "Description",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 66,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "This dashboard provides the information required to analyse the flow executions and their block executions within the CORTEX platform.\r\n\r\n|Filter  |Description|\r\n|--------|-----------|\r\n| Tenant | List of tenants. |\r\n| System | List of systems. |\r\n| Node | List of hosts that processed the requests. |\r\n| Package Name | List of packages. |\r\n| Flow Name | List of flows that have execution requests. |\r\n| Result | List of results found in the HTTP responses. |\r\n| Custom Filter | Enables filtering on all available values including those that are not exposed by default. |\r\n\r\nAll filters (excluding Custom Filter) will display their available options dependant on the preceeding filters selected.\r\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.1.1",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 116,
+      "title": "Dashboard",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 110,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Flow Executions \r\n\r\nFlow execution request history for the specified time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.1.1",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_CORTEX_LOKI}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ExecutionID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 321
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Show Block Executions",
+                    "url": "d/01d26a3a-8de7-4874-854e-242ff2dd590a/flow-execution-details?var-TraceId=${__data.fields.TraceID}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration (s)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 118
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TraceID"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom.viz",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ExecutionID"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom.viz",
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 114,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Start Time"
+          }
+        ]
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_CORTEX_LOKI}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\", FlowResult=~\"$Result\"}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "ExecutionID",
+                "path": "Event.Tags.Cortex[\"Execution.Id\"]"
+              },
+              {
+                "alias": "Duration",
+                "path": "Event.Duration.InSeconds"
+              },
+              {
+                "alias": "Start Time",
+                "path": "Event.Duration.StartedAt"
+              },
+              {
+                "alias": "End Time",
+                "path": "Event.Duration.EndedAt"
+              },
+              {
+                "alias": "Flow Name",
+                "path": "Event.Tags.Cortex[\"Flow.Name\"]"
+              },
+              {
+                "alias": "Package",
+                "path": "Event.Tags.Cortex[\"Package.Name\"]"
+              },
+              {
+                "alias": "Result",
+                "path": "Event.Tags.Cortex.[\"Execution.Result.Status\"]"
+              },
+              {
+                "alias": "TraceID",
+                "path": "Event.Correlation.TraceId"
+              }
+            ],
+            "source": "Line"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "ExecutionID",
+                "Duration",
+                "Start Time",
+                "End Time",
+                "Flow Name",
+                "Package",
+                "Result",
+                "TraceID"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "TraceID": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Duration": 6,
+              "End Time": 5,
+              "ExecutionID": 1,
+              "Flow Name": 2,
+              "Package": 3,
+              "Result": 7,
+              "Start Time": 4,
+              "TraceID": 0
+            },
+            "renameByName": {
+              "Duration": "Duration (s)",
+              "Result": ""
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Start Time"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "End Time"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "Duration"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Duration"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 111,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# Block Executions \r\n\r\nBlock executions for the selected flow execution and all correlated flow executions.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.1.1",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_CORTEX_LOKI}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "noValue": "No Block Executions",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ExecutionID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Block Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 251
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Flow Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 244
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 209
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "End Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 210
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration (ms)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 133
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Block Properties"
+            },
+            "properties": [
+              {
+                "id": "custom.inspect",
+                "value": true
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TraceID"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom.viz",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "BlockID"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom.viz",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gateway URL"
+            },
+            "properties": [
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ExecutionID"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom.viz",
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${DS_CORTEX_LOKI}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{job=\"ExecutionService\", Type=\"Cortex\"} |= `\"TraceId\":\"${TraceId}\"` |= `\"Method\":\"Cortex.FlowEngine.Core.Blocks.Block.Execute\"`",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "jsonPaths": [
+              {
+                "alias": "ExecutionID",
+                "path": "Event.Tags.Cortex[\"Execution.Id\"]"
+              },
+              {
+                "alias": "Start Time",
+                "path": "Event.Duration.StartedAt"
+              },
+              {
+                "alias": "End Time",
+                "path": "Event.Duration.EndedAt"
+              },
+              {
+                "alias": "Duration (s)",
+                "path": "Event.Duration.InSeconds"
+              },
+              {
+                "alias": "Flow Name",
+                "path": "Event.Details.FlowName"
+              },
+              {
+                "alias": "Block Name",
+                "path": "Event.Tags.Cortex[\"Block.Name\"]"
+              },
+              {
+                "alias": "Block Status",
+                "path": "Event.Tags.Cortex.[\"Block.Result.Status\"]"
+              },
+              {
+                "alias": "TraceID",
+                "path": "Event.Correlation.TraceId"
+              },
+              {
+                "alias": "Block Properties",
+                "path": "Event.Tags.Custom"
+              },
+              {
+                "alias": "Gateway URL",
+                "path": "Event.Details.GatewayUrl"
+              }
+            ],
+            "source": "Line"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Duration (ms)",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Duration (s)"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "1000"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "ExecutionID",
+                "Start Time",
+                "End Time",
+                "Flow Name",
+                "Block Name",
+                "Block Status",
+                "TraceID",
+                "Block Properties",
+                "Gateway URL",
+                "Duration (ms)"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Block Properties": false,
+              "BlockID": false,
+              "ExecutionID": false,
+              "TraceID": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Block Name": 2,
+              "Block Properties": 9,
+              "Block Status": 7,
+              "Duration (ms)": 6,
+              "End Time": 5,
+              "ExecutionID": 1,
+              "Flow Name": 3,
+              "Gateway URL": 8,
+              "Start Time": 4,
+              "TraceID": 0
+            },
+            "renameByName": {
+              "Duration": "Duration (s)"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Start Time"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "End Time"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "Duration (ms)"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Block Name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Block Properties": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Block Status": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "BlockID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Duration": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Duration (ms)": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "End Time": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "ExecutionID": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Flow Name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Gateway URL": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Start Time": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "TraceID": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Start Time"
+              }
+            ]
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "Block Properties"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "multi": true,
+        "name": "Tenant",
+        "options": [],
+        "query": {
+          "label": "Tenant",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "multi": true,
+        "name": "System",
+        "options": [],
+        "query": {
+          "label": "System",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\", Tenant=~\"$Tenant\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "multi": true,
+        "name": "Node",
+        "options": [],
+        "query": {
+          "label": "Node",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\", Tenant=~\"$Tenant\", System=~\"$System\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "label": "Package Name",
+        "multi": true,
+        "name": "PackageName",
+        "options": [],
+        "query": {
+          "label": "PackageName",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "label": "Flow Name",
+        "multi": true,
+        "name": "FlowName",
+        "options": [],
+        "query": {
+          "label": "FlowName",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "includeAll": true,
+        "label": "Result",
+        "multi": true,
+        "name": "Result",
+        "options": [],
+        "query": {
+          "label": "FlowResult",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"ExecutionService\", Type=\"Cortex\", Method=\"FlowExecution\", Tenant=~\"$Tenant\", System=~\"$System\", Node=~\"$Node\", PackageName=~\"$PackageName\", FlowName=~\"$FlowName\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {},
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": false,
+        "name": "TraceId",
+        "options": [],
+        "query": {
+          "label": "",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 0
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": true,
+        "baseFilters": [],
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_CORTEX_LOKI}"
+        },
+        "enableGroupBy": false,
+        "filters": [],
+        "label": "Custom Filter",
+        "name": "CustomFilter",
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "Europe/London",
+  "title": "Flow Execution Details",
+  "uid": "01d26a3a-8de7-4874-854e-242ff2dd590a",
+  "version": 3,
+  "weekStart": ""
+}
